@@ -105,8 +105,8 @@ SVI Range → Risk Level:
 
 ### Prerequisites
 
-- **Python 3.9+** (for backend)
-- **Node.js 18+** and **npm** (for frontend)
+- **Python 3.11+** (developed on Python 3.11.9 — recommended version)
+- **Node.js 20+** and **npm 10+** (developed on Node.js v24.15.0 / npm 11.12.1)
 
 ---
 
