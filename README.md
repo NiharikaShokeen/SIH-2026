@@ -204,15 +204,3 @@ The Auto-Recommendation Engine maps SVI scores and trauma tags to 6 action verti
 | Speech | Librosa acoustic features (F0, jitter, shimmer) |
 | Deployment | Vite dev server + FastAPI Uvicorn |
 
----
-
-## Team
-
-**SIH 2026 Team — AI Stress & Trauma Assessment Module**  
-Contributor: Harshita Seja (asseja.harshita@gmail.com)
-
----
-
-## Status
-
-> **Draft v1.0** — Initial prototype build. Active development in progress.
