@@ -205,15 +205,35 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
                 </p>
               </div>
 
-              {/* Dispatch Action Button */}
-              <div className="pt-2">
-                <button
-                  onClick={() => alert(`Acknowledge & Dispatch Support triggered for Case ${selectedCase.case_id}. Control room notification sent.`)}
-                  className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20"
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  <span>{t('acknowledge_dispatch_btn', selectedLanguage)}</span>
-                </button>
+              {/* Dispatch Action Toolbar */}
+              <div className="space-y-3 pt-2">
+                <span className="text-xs font-bold text-slate-300 block">Officer Dispatch & Support Actions:</span>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <button
+                    onClick={() => alert(`[112 EMERGENCY DISPATCH]: Police escort assigned for Case ${selectedCase.case_id} under SC/ST PoA Act Sec 15A.`)}
+                    className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 shadow-md"
+                  >
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span>Dispatch Escort (112)</span>
+                  </button>
+
+                  <button
+                    onClick={() => alert(`[DLSA LEGAL AID]: Special Advocate assigned for Case ${selectedCase.case_id}.`)}
+                    className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 shadow-md"
+                  >
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    <span>Assign DLSA Legal Aid</span>
+                  </button>
+
+                  <button
+                    onClick={() => alert(`[CASE RESOLVED]: Case ${selectedCase.case_id} marked resolved & victim safely relocated.`)}
+                    className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 shadow-md"
+                  >
+                    <UserCheck className="w-3.5 h-3.5" />
+                    <span>Mark Resolved</span>
+                  </button>
+                </div>
               </div>
 
             </div>
