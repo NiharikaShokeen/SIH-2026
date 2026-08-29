@@ -28,10 +28,10 @@ export default function RecommendationCards({ recommendations, selectedLanguage 
     <div className="space-y-4 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-white">{t('recommendations_title', selectedLanguage)}</h3>
-          <p className="text-xs text-slate-400">{t('recommendations_subtitle', selectedLanguage)}</p>
+          <h3 className="text-lg font-bold text-primary-dark">{t('recommendations_title', selectedLanguage)}</h3>
+          <p className="text-xs text-text-muted">{t('recommendations_subtitle', selectedLanguage)}</p>
         </div>
-        <span className="text-xs font-semibold text-cyan-400 bg-cyan-950 border border-cyan-800 px-3 py-1 rounded-full">
+        <span className="text-xs font-semibold text-primary-dark bg-primary/10 border border-primary/30 px-3 py-1 rounded-full">
           {recommendations.length} {t('support_verticals_count', selectedLanguage)}
         </span>
       </div>
@@ -40,19 +40,19 @@ export default function RecommendationCards({ recommendations, selectedLanguage 
         {recommendations.map((rec, idx) => (
           <div 
             key={idx}
-            className="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 glass-panel flex flex-col justify-between space-y-4 shadow-xl hover:border-slate-700 transition-all group"
+            className="bg-surface border border-border rounded-3xl p-5 flex flex-col justify-between space-y-4 shadow-sm hover:border-primary/50 transition-all group"
           >
             {/* Header */}
             <div className="flex items-start justify-between">
-              <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 group-hover:scale-105 transition-transform">
+              <div className="p-3 bg-background rounded-2xl border border-border group-hover:scale-105 transition-transform">
                 {getVerticalIcon(rec.vertical)}
               </div>
               <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full border ${
                 rec.priority === 'CRITICAL'
-                  ? 'bg-red-950 border-red-800 text-red-400'
+                  ? 'bg-risk-critical-bg border-risk-critical/40 text-risk-critical'
                   : rec.priority === 'HIGH'
-                  ? 'bg-amber-950 border-amber-800 text-amber-400'
-                  : 'bg-emerald-950 border-emerald-800 text-emerald-400'
+                  ? 'bg-risk-high-bg border-risk-high/40 text-risk-high'
+                  : 'bg-risk-low-bg border-risk-low/40 text-risk-low'
               }`}>
                 {rec.priority} PRIORITY
               </span>
@@ -60,16 +60,16 @@ export default function RecommendationCards({ recommendations, selectedLanguage 
 
             {/* Content */}
             <div className="space-y-2">
-              <h4 className="text-sm font-bold text-white">{rec.vertical}</h4>
-              <span className="text-[11px] text-cyan-400 font-semibold block">{rec.agency}</span>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+              <h4 className="text-sm font-bold text-text">{rec.vertical}</h4>
+              <span className="text-[11px] text-primary-dark font-semibold block">{rec.agency}</span>
+              <p className="text-xs text-text leading-relaxed font-sans bg-background p-3 rounded-xl border border-border">
                 {rec.action_item}
               </p>
             </div>
 
             {/* Why Recommended Rationale */}
-            <div className="pt-2 border-t border-slate-800/80 text-[11px] text-slate-400">
-              <strong className="text-slate-300">{t('rationale_label', selectedLanguage)} </strong> {rec.why}
+            <div className="pt-2 border-t border-border text-[11px] text-text-muted">
+              <strong className="text-text">{t('rationale_label', selectedLanguage)} </strong> {rec.why}
             </div>
 
           </div>
@@ -77,4 +77,5 @@ export default function RecommendationCards({ recommendations, selectedLanguage 
       </div>
     </div>
   );
+
 }

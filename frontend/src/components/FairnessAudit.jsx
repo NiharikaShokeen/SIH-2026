@@ -71,41 +71,41 @@ export default function FairnessAudit({ selectedLanguage = 'en' }) {
     <div className="space-y-6 animate-fade-in">
       
       {/* Top Overview Banner */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 glass-panel flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+      <div className="bg-surface border border-border rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
         <div className="flex items-center space-x-4">
-          <div className="p-4 bg-emerald-950 border border-emerald-700/60 rounded-2xl text-emerald-400">
+          <div className="p-4 bg-risk-low-bg border border-risk-low/40 rounded-2xl text-risk-low">
             <Scale className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="bg-emerald-950 border border-emerald-800 text-emerald-400 text-xs font-bold px-2.5 py-0.5 rounded">
+              <span className="bg-risk-low-bg border border-risk-low/40 text-risk-low text-xs font-bold px-2.5 py-0.5 rounded">
                 {t('audit_verified', selectedLanguage)}
               </span>
-              <span className="text-xs text-slate-400 font-mono">IEEE 2830 / MoSJE Ethical AI Standard</span>
+              <span className="text-xs text-text-muted font-mono">IEEE 2830 / MoSJE Ethical AI Standard</span>
             </div>
-            <h3 className="text-xl font-bold text-white mt-1">{t('ethics_title', selectedLanguage)}</h3>
-            <p className="text-xs text-slate-300">{t('ethics_subtitle', selectedLanguage)}</p>
+            <h3 className="text-xl font-bold text-primary-dark mt-1">{t('ethics_title', selectedLanguage)}</h3>
+            <p className="text-xs text-text-muted">{t('ethics_subtitle', selectedLanguage)}</p>
           </div>
         </div>
 
         <div className="flex items-center space-x-4">
-          <div className="text-right bg-slate-950 px-6 py-4 rounded-2xl border border-slate-800">
-            <span className="text-xs text-slate-400 block font-semibold">{t('parity_index_label', selectedLanguage)}</span>
-            <span className="text-3xl font-mono font-black text-emerald-400">{fairnessData.overall_fairness_index} / 100</span>
+          <div className="text-right bg-background px-6 py-4 rounded-2xl border border-border">
+            <span className="text-xs text-text-muted block font-semibold">{t('parity_index_label', selectedLanguage)}</span>
+            <span className="text-3xl font-mono font-black text-risk-low">{fairnessData.overall_fairness_index} / 100</span>
           </div>
 
           <div className="flex flex-col space-y-2">
             <button
               onClick={triggerRecalibration}
               disabled={isAuditing}
-              className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-cyan-500/20 disabled:opacity-50"
+              className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-xl text-xs font-bold shadow-sm disabled:opacity-50"
             >
               {isAuditing ? `Auditing (${auditProgress}%)` : 'Run Live Bias Audit'}
             </button>
 
             <button
               onClick={downloadAuditCertificate}
-              className="px-4 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-xl text-xs font-bold"
+              className="px-4 py-2 bg-background hover:bg-surface border border-border text-text rounded-xl text-xs font-bold"
             >
               Download Report
             </button>
@@ -114,46 +114,46 @@ export default function FairnessAudit({ selectedLanguage = 'en' }) {
       </div>
 
       {isAuditing && (
-        <div className="bg-slate-950 p-4 rounded-2xl border border-cyan-800/80 space-y-2 animate-pulse">
-          <div className="flex items-center justify-between text-xs font-bold text-cyan-400">
+        <div className="bg-background p-4 rounded-2xl border border-primary/40 space-y-2 animate-pulse">
+          <div className="flex items-center justify-between text-xs font-bold text-primary-dark">
             <span>Executing Demographic Parity & Disparate Impact Analysis...</span>
             <span className="font-mono">{auditProgress}%</span>
           </div>
-          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-            <div className="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full transition-all duration-300" style={{ width: `${auditProgress}%` }}></div>
+          <div className="w-full bg-border h-2 rounded-full overflow-hidden">
+            <div className="bg-primary h-full transition-all duration-300" style={{ width: `${auditProgress}%` }}></div>
           </div>
         </div>
       )}
 
       {/* Language Fairness Table */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4 shadow-xl">
-        <h4 className="text-sm font-bold text-white flex items-center space-x-2">
-          <ShieldCheck className="w-4 h-4 text-cyan-400" />
+      <div className="bg-surface border border-border rounded-3xl p-6 space-y-4 shadow-sm">
+        <h4 className="text-sm font-bold text-primary-dark flex items-center space-x-2">
+          <ShieldCheck className="w-4 h-4 text-primary" />
           <span>{t('language_parity_title', selectedLanguage)}</span>
         </h4>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase">
-                <th className="pb-3">{t('col_language', selectedLanguage)}</th>
-                <th className="pb-3">{t('col_sample', selectedLanguage)}</th>
-                <th className="pb-3">{t('col_mean_svi', selectedLanguage)}</th>
-                <th className="pb-3">{t('col_high_risk', selectedLanguage)}</th>
-                <th className="pb-3">{t('col_disparity', selectedLanguage)}</th>
-                <th className="pb-3 text-right">{t('col_status', selectedLanguage)}</th>
+              <tr className="border-b border-border text-text-muted font-bold uppercase bg-background">
+                <th className="py-3 px-3">{t('col_language', selectedLanguage)}</th>
+                <th className="py-3 px-3">{t('col_sample', selectedLanguage)}</th>
+                <th className="py-3 px-3">{t('col_mean_svi', selectedLanguage)}</th>
+                <th className="py-3 px-3">{t('col_high_risk', selectedLanguage)}</th>
+                <th className="py-3 px-3">{t('col_disparity', selectedLanguage)}</th>
+                <th className="py-3 px-3 text-right">{t('col_status', selectedLanguage)}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-200">
+            <tbody className="divide-y divide-border text-text">
               {fairnessData.language_distribution.map((lang, idx) => (
-                <tr key={idx} className="hover:bg-slate-800/40">
-                  <td className="py-3 font-semibold text-white">{lang.language}</td>
-                  <td className="py-3 font-mono">{lang.sample_count}</td>
-                  <td className="py-3 font-mono text-cyan-400">{lang.mean_svi}</td>
-                  <td className="py-3 font-mono">{lang.high_risk_pct}%</td>
-                  <td className="py-3 font-mono font-bold text-emerald-400">{lang.disparity_ratio}</td>
-                  <td className="py-3 text-right">
-                    <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold">
+                <tr key={idx} className="hover:bg-background/80">
+                  <td className="py-3 px-3 font-semibold text-text">{lang.language}</td>
+                  <td className="py-3 px-3 font-mono">{lang.sample_count}</td>
+                  <td className="py-3 px-3 font-mono text-primary-dark font-bold">{lang.mean_svi}</td>
+                  <td className="py-3 px-3 font-mono">{lang.high_risk_pct}%</td>
+                  <td className="py-3 px-3 font-mono font-bold text-risk-low">{lang.disparity_ratio}</td>
+                  <td className="py-3 px-3 text-right">
+                    <span className="px-2 py-0.5 rounded bg-risk-low-bg text-risk-low border border-risk-low/40 text-[10px] font-bold">
                       EQUIVALENT
                     </span>
                   </td>
@@ -165,17 +165,18 @@ export default function FairnessAudit({ selectedLanguage = 'en' }) {
       </div>
 
       {/* Ethical Safeguards Grid */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 glass-panel space-y-3 shadow-xl">
-        <h4 className="text-sm font-bold text-white">{t('active_safeguards', selectedLanguage)}</h4>
+      <div className="bg-surface border border-border rounded-3xl p-6 space-y-3 shadow-sm">
+        <h4 className="text-sm font-bold text-primary-dark">{t('active_safeguards', selectedLanguage)}</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {fairnessData.ethical_safeguards.map((sg, idx) => (
-            <div key={idx} className="flex items-center space-x-3 bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs text-slate-300">
-              <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <div key={idx} className="flex items-center space-x-3 bg-background p-3 rounded-2xl border border-border text-xs text-text">
+              <CheckCircle className="w-4 h-4 text-risk-low flex-shrink-0" />
               <span>{sg}</span>
             </div>
           ))}
         </div>
       </div>
+
 
     </div>
   );

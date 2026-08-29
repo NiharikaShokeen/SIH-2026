@@ -7,28 +7,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#2DD4BF',
-        'primary-dark': '#14B8A6',
-        secondary: '#38BDF8',
+        primary: '#527D7D',
+        'primary-dark': '#3F6565',
+        secondary: '#9183A0',
 
-        background: '#0B1120',
-        surface: '#0F172A',
+        background: '#F7F4EE',
+        surface: '#FFFDFC',
 
-        text: '#F8FAFC',
-        'text-muted': '#94A3B8',
-        border: '#1E293B',
+        text: '#34383C',
+        'text-muted': '#697075',
+        border: '#DDD9D1',
 
-        'risk-low': '#34D399',
-        'risk-low-bg': '#064E3B',
+        'risk-low': '#639922',
+        'risk-low-bg': '#E5EFDF',
 
-        'risk-moderate': '#F59E0B',
-        'risk-moderate-bg': '#78350F',
+        'risk-moderate': '#854F0B',
+        'risk-moderate-bg': '#F5E9D0',
 
-        'risk-high': '#F97316',
-        'risk-high-bg': '#7C2D12',
+        'risk-high': '#712B13',
+        'risk-high-bg': '#F1C8B9',
 
-        'risk-critical': '#F43F5E',
-        'risk-critical-bg': '#881337',
+        'risk-critical': '#72243E',
+        'risk-critical-bg': '#E8C1CA',
       },
 
       fontFamily: {
@@ -36,6 +36,7 @@ export default {
       }
     },
   },
+
 
   plugins: [],
 }

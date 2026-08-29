@@ -136,13 +136,14 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
             isSafetySupport ? 'bg-emerald-300 animate-pulse motion-reduce:animate-none' :
             'bg-teal-400'
           }`}></span>
-          <span className="text-[9px] font-medium text-slate-300 uppercase tracking-wider">
+          <span className="text-[9px] font-medium text-text-muted uppercase tracking-wider">
             {state === 'speaking' ? 'AASRA Speaking' : 
              state === 'listening' ? 'AASRA Listening' : 
              state === 'thinking' ? 'AASRA Thinking' : 
              isSafetySupport ? 'AASRA Safety Support' : 
              'AASRA Active'}
           </span>
+
         </div>
 
       </div>

@@ -4,35 +4,32 @@
 
 @layer utilities {
   .bg-radial-gradient {
-    background: radial-gradient(ellipse at top, #0f172a 0%, #090d16 100%);
+    background: #F7F4EE;
   }
 
   .glass-panel-luxury {
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(30, 41, 59, 0.8);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    background: #FFFDFC;
+    border: 1px solid #DDD9D1;
+    box-shadow: 0 4px 16px rgba(52, 56, 60, 0.05);
   }
 
   .glass-card-hover {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(30, 41, 59, 0.8);
+    background: #FFFDFC;
+    border: 1px solid #DDD9D1;
     transition: all 0.25s ease-in-out;
   }
 
   .glass-card-hover:hover {
-    background: rgba(15, 23, 42, 0.9);
-    border-color: rgba(45, 212, 191, 0.5);
-    box-shadow: 0 8px 24px rgba(45, 212, 191, 0.15);
+    background: #FFFDFC;
+    border-color: #527D7D;
+    box-shadow: 0 6px 20px rgba(82, 125, 125, 0.12);
   }
 
   .text-gradient-teal {
-    background: linear-gradient(135deg, #2dd4bf 0%, #38bdf8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #3F6565;
   }
 }
+
 
 
 /* Existing breathing animation — functionality preserved */
@@ -98,14 +95,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #F7F4EE;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #DDD9D1;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #14b8a6;
+  background: #527D7D;
 }
