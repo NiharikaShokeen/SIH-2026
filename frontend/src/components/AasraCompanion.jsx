@@ -46,8 +46,8 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
 
         {/* Outer Glow Halo */}
         <div className={`absolute inset-0 rounded-full blur-xl transition-all duration-700 ${
-          state === 'speaking' 
-            ? 'bg-gradient-to-r from-emerald-500/40 via-teal-400/40 to-cyan-500/40 opacity-90'
+          state === 'speaking'
+            ? 'bg-primary/20 opacity-80'
             : state === 'listening'
             ? 'bg-gradient-to-r from-teal-400/35 to-cyan-500/35 opacity-80'
             : state === 'thinking'
@@ -77,9 +77,9 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
           <svg className="w-full h-full p-2.5 opacity-85" viewBox="0 0 100 100" fill="none">
             <defs>
               <linearGradient id="aasraGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#818cf8" stopOpacity="0.4" />
+                <stop offset="0%" stopColor="#527D7D" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#9183A0" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#FFFDFC" stopOpacity="0.35" />
               </linearGradient>
               <linearGradient id="aasraWarmGlow" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#34d399" stopOpacity="0.9" />
@@ -128,7 +128,7 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
         </div>
 
         {/* State Badge Dot */}
-        <div className="absolute -bottom-1 right-1 flex items-center space-x-1 bg-slate-900/90 border border-teal-500/40 px-2 py-0.5 rounded-full shadow-lg">
+        <div className="absolute -bottom-1 right-1 flex items-center space-x-1 bg-surface border border-primary/30 px-2 py-0.5 rounded-full shadow-lg">
           <span className={`w-1.5 h-1.5 rounded-full ${
             state === 'speaking' ? 'bg-emerald-400 animate-ping motion-reduce:animate-none' :
             state === 'listening' ? 'bg-cyan-400 animate-pulse motion-reduce:animate-none' :
@@ -149,10 +149,10 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
 
       {showText && (
         <div className="text-center space-y-1">
-          <h4 className="text-sm font-semibold text-slate-100 tracking-wide flex items-center justify-center space-x-1.5">
+          <h4 className="text-sm font-semibold text-text tracking-wide flex items-center justify-center space-x-1.5">
             <span>AASRA Support Companion</span>
           </h4>
-          {subtext && <p className={`text-slate-400 max-w-sm ${currentSize.text}`}>{subtext}</p>}
+          {subtext && <p className={`text-text-muted max-w-sm ${currentSize.text}`}>{subtext}</p>}
         </div>
       )}
     </div>
