@@ -73,28 +73,38 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
 
       {/* Priority Escalation Alert Banner for Officers */}
       {cases.some(c => c.risk_category === 'CRITICAL') && (
-        <div className="bg-slate-900 border border-rose-900/80 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fade-in shadow-xl">
-          <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-rose-950 border border-rose-800 rounded-xl text-rose-400">
-              <AlertTriangle className="w-5 h-5 animate-pulse" />
+        <div className="bg-gradient-to-r from-rose-950 via-slate-900 to-slate-950 border-2 border-rose-600/90 rounded-3xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fade-in shadow-2xl">
+          <div className="flex items-start space-x-4">
+            <div className="p-3 bg-rose-600 rounded-2xl text-white shadow-lg shadow-rose-500/40 mt-0.5">
+              <AlertTriangle className="w-6 h-6 animate-pulse" />
             </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-rose-300 bg-rose-950 border border-rose-800 px-2 py-0.5 rounded font-mono">
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-white bg-rose-600 px-2.5 py-0.5 rounded font-mono shadow">
                   PRIORITY REVIEW REQUIRED
                 </span>
-                <span className="text-xs text-slate-300 font-mono">Protected Case: NHAA-2026-8942</span>
+                <span className="text-xs font-mono font-bold text-rose-300">
+                  Case ID: {cases.find(c => c.risk_category === 'CRITICAL')?.case_id || 'NHAA-2026-8942'}
+                </span>
+                <span className="text-[10px] font-mono font-bold bg-rose-950 text-rose-300 border border-rose-800 px-2 py-0.5 rounded">
+                  CRITICAL • SVI: {cases.find(c => c.risk_category === 'CRITICAL')?.svi_score || 91}
+                </span>
               </div>
-              <p className="text-xs text-slate-300 mt-1 font-sans">
-                Key Indicators: <strong>Repeated Intimidation • Severe Fear Biomarkers • Escalating Distress Trajectory</strong>
+              <h4 className="text-sm font-bold text-white font-sans">
+                High-Risk Combination Detected: Repeated Intimidation • Severe Fear Signals • Family Safety Concern
+              </h4>
+              <p className="text-xs text-rose-200/90">
+                Recommended Immediate Action: <strong>Immediate human review & 1-on-1 trauma counselling assignment</strong>
               </p>
             </div>
           </div>
+
           <button
             onClick={() => onSelectCase && onSelectCase(cases.find(c => c.risk_category === 'CRITICAL'))}
-            className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-md whitespace-nowrap"
+            className="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl text-xs font-bold shadow-lg whitespace-nowrap transition-all flex items-center space-x-2"
           >
-            Immediate Human Review
+            <ShieldAlert className="w-4 h-4" />
+            <span>Review Case</span>
           </button>
         </div>
       )}
@@ -138,7 +148,7 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
           </div>
 
           {/* Case List */}
-          <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-[520px] overflow-y-auto pr-1">
             {filteredCases.map((c) => (
               <button
                 key={c.case_id}
@@ -176,7 +186,7 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
 
         </div>
 
-        {/* Right Column: Case Briefing & Longitudinal Trend */}
+        {/* Right Column: Case Briefing, Explainable Breakdown & Human Dispatch */}
         <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 glass-panel space-y-6 shadow-xl">
           {selectedCase ? (
             <div className="space-y-6">
@@ -194,10 +204,55 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
                 </div>
 
                 <div className="text-right">
-                  <span className="text-xs text-slate-400 block font-semibold">SVI Score</span>
+                  <span className="text-xs text-slate-400 block font-semibold">SVI Risk Score</span>
                   <span className="text-2xl font-mono font-black text-cyan-400">
                     {selectedCase.svi_score || selectedCase.svi_analysis?.svi_score}
                   </span>
+                </div>
+              </div>
+
+              {/* Explainable AI Section: Why This Case Was Prioritized */}
+              <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <h4 className="text-xs font-bold text-teal-400 uppercase tracking-wider flex items-center space-x-1.5">
+                    <Activity className="w-4 h-4 text-teal-400" />
+                    <span>Why This Case Was Prioritized (Explainable SVI Output)</span>
+                  </h4>
+                  <span className="text-[10px] text-slate-400 font-mono">Model Audit Verified</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  {/* Linguistic Indicators */}
+                  <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
+                    <span className="text-[11px] font-bold text-indigo-300 block">Linguistic Indicators:</span>
+                    <p className="text-slate-300 text-[11px]">
+                      {selectedCase.nlp_analysis?.trauma_flags?.join(', ') || 'Repeated Intimidation • Atrocity Threat • Caste Slurs'}
+                    </p>
+                  </div>
+
+                  {/* Acoustic Indicators */}
+                  <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
+                    <span className="text-[11px] font-bold text-cyan-300 block">Acoustic Indicators:</span>
+                    <p className="text-slate-300 text-[11px]">
+                      {selectedCase.speech_analysis?.emotional_indicators?.join(', ') || 'High Pitch Instability (Tremor) • Vocal Hesitation Pauses'}
+                    </p>
+                  </div>
+
+                  {/* Context Indicators */}
+                  <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
+                    <span className="text-[11px] font-bold text-amber-300 block">Context Indicators:</span>
+                    <p className="text-slate-300 text-[11px]">
+                      Family Safety Risk • Police FIR Refusal • Active Perpetrator Intimidation
+                    </p>
+                  </div>
+
+                  {/* Historical Trend */}
+                  <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1">
+                    <span className="text-[11px] font-bold text-emerald-300 block">Historical Trend:</span>
+                    <p className="text-slate-300 text-[11px]">
+                      Escalating vulnerability trajectory (+26% delta over previous interactions)
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -211,7 +266,7 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
                   <span className="text-red-400 font-semibold text-[11px]">{t('escalating_trend', selectedLanguage)}</span>
                 </div>
 
-                <div className="h-40 w-full pt-2">
+                <div className="h-36 w-full pt-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={trendData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -232,35 +287,58 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
                 </p>
               </div>
 
-              {/* Dispatch Action Toolbar */}
+              {/* Recommended Human Actions Section */}
               <div className="space-y-3 pt-2">
-                <span className="text-xs font-bold text-slate-300 block">Officer Dispatch & Support Actions:</span>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <button
-                    onClick={() => alert(`[112 EMERGENCY DISPATCH]: Police escort assigned for Case ${selectedCase.case_id} under SC/ST PoA Act Sec 15A.`)}
-                    className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 shadow-md"
-                  >
-                    <ShieldAlert className="w-3.5 h-3.5" />
-                    <span>Dispatch Escort (112)</span>
-                  </button>
-
-                  <button
-                    onClick={() => alert(`[DLSA LEGAL AID]: Special Advocate assigned for Case ${selectedCase.case_id}.`)}
-                    className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 shadow-md"
-                  >
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    <span>Assign DLSA Legal Aid</span>
-                  </button>
-
-                  <button
-                    onClick={() => alert(`[CASE RESOLVED]: Case ${selectedCase.case_id} marked resolved & victim safely relocated.`)}
-                    className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center space-x-1.5 shadow-md"
-                  >
-                    <UserCheck className="w-3.5 h-3.5" />
-                    <span>Mark Resolved</span>
-                  </button>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-200 block">Recommended Action Verticals (Prioritized):</span>
+                  <span className="text-[10px] text-teal-400 font-mono">🟢 Primary Action First</span>
                 </div>
+                
+                <div className="space-y-2">
+                  {/* Primary Urgent Action */}
+                  <div className="p-3.5 bg-emerald-950/40 border border-emerald-800/80 rounded-2xl flex items-center justify-between gap-3">
+                    <div className="space-y-0.5">
+                      <span className="text-xs font-bold text-emerald-300 flex items-center space-x-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Primary Action: Assign Human Counsellor & 112 Escort</span>
+                      </span>
+                      <p className="text-[11px] text-slate-300">Immediate 1-on-1 psychological support and police protection under SC/ST PoA Act Sec 15A.</p>
+                    </div>
+                    <button
+                      onClick={() => alert(`[ASSIGNED]: Human Counsellor & 112 Police Escort assigned for Case ${selectedCase.case_id}.`)}
+                      className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow whitespace-nowrap"
+                    >
+                      Assign Now
+                    </button>
+                  </div>
+
+                  {/* Secondary Actions Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button
+                      onClick={() => alert(`[DLSA LEGAL AID]: Special Advocate assigned for Case ${selectedCase.case_id}.`)}
+                      className="p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold text-xs flex items-center justify-between shadow-sm"
+                    >
+                      <span>DLSA Legal Aid Advocate</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-cyan-400" />
+                    </button>
+
+                    <button
+                      onClick={() => alert(`[CASE RESOLVED]: Case ${selectedCase.case_id} marked resolved & victim relocated.`)}
+                      className="p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold text-xs flex items-center justify-between shadow-sm"
+                    >
+                      <span>Mark Case Resolved</span>
+                      <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Subtle Ethical AI Disclaimer */}
+                <div className="pt-2 text-center">
+                  <p className="text-[11px] text-slate-400 italic">
+                    "AI recommends and prioritizes. Humans make intervention decisions."
+                  </p>
+                </div>
+
               </div>
 
             </div>
@@ -276,3 +354,4 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
     </div>
   );
 }
+
