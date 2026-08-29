@@ -2,8 +2,10 @@ export const SAMPLE_PRESETS = [
   {
     id: "preset-1",
     name: "Sunita Devi (Hathras, UP)",
-    category: "Severe Atrocity",
+    category: "Critical Escalation",
+    is_critical_preset: true,
     complaint_text: "Main Hathras se bol rahi hu. Gaon ke sarpanch aur unke gundon ne mere pati ko lathi se mara. Hamari zameen pe qabza kar liya aur keh rahe hain gaau chhod do varna jaan se maar denge. Police thane gayi toh daroga ne FIR likhne se manaa kar diya. Mujhe ab marne ka man kar raha hai, koi rasta nahi dikh raha.",
+    detected_indicators: ["Repeated Intimidation", "Severe Fear Signals", "Family Safety Concern", "Suicidal Ideation Flag"],
     prosody: {
       pitch_mean: 245.0,
       pitch_std: 48.2,
@@ -19,6 +21,7 @@ export const SAMPLE_PRESETS = [
     name: "Ramesh Kumar (Gwalior, MP)",
     category: "Social Boycott",
     complaint_text: "Humare basti ka paani ka kuan band kar diya gaya hai. Jaati ke naam par bahiishkaar kar diya hai. Dukaan se ration bhi nahi de rahe hain. Bolte hain tum dalit ho yahan se bhaag jao. Humare bache bhukhe hain.",
+    detected_indicators: ["Social Exclusion", "Essential Services Cutoff", "Community Vulnerability"],
     prosody: {
       pitch_mean: 210.0,
       pitch_std: 32.0,
@@ -34,6 +37,7 @@ export const SAMPLE_PRESETS = [
     name: "Anita Valmiki (Jaipur, RJ)",
     category: "Caste Harassment",
     complaint_text: "I was subjected to explicit casteist slurs at my workplace and threatened with violence if I report to higher authorities. They tore my official files and warned me to withdraw my previous complaint under SC/ST Act.",
+    detected_indicators: ["Workplace Harassment", "Explicit Slurs", "Witness Retaliation Threat"],
     prosody: {
       pitch_mean: 220.0,
       pitch_std: 30.0,
@@ -49,6 +53,7 @@ export const SAMPLE_PRESETS = [
     name: "Harish Meena (Udaipur, RJ)",
     category: "Land Displacement",
     complaint_text: "Hamare khet ki baad tod di gayi. Local dominant group wale bandook dikhakar bolte hain ki case wapas lo varna parivaar ko khatam kar denge. Police help nahi kar rahi.",
+    detected_indicators: ["Armed Intimidation", "Land Encroachment", "Family Death Threat"],
     prosody: {
       pitch_mean: 235.0,
       pitch_std: 42.0,
@@ -60,3 +65,4 @@ export const SAMPLE_PRESETS = [
     }
   }
 ];
+

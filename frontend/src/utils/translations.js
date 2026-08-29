@@ -21,6 +21,12 @@ export const translations = {
     btn_silent_mode: "I can't speak right now",
     btn_emergency_support: "Emergency Support (112)",
     
+    // AASRA Reassurance Keys
+    aasra_reassurance_1: "Thank you for telling me.",
+    aasra_reassurance_2: "Your safety matters.",
+    aasra_reassurance_3: "You don't have to go through this alone.",
+    aasra_reassurance_4: "Let's look at what support may be helpful right now.",
+    
     // Emotional Check-In
     emotional_checkin_title: "How are you feeling right now?",
     emotional_checkin_subtitle: "This helps us understand how to support you right now. You can skip this at any time.",
