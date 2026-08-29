@@ -28,43 +28,43 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
         {/* Concentric Ambient Waves when Listening / Speaking */}
         {(state === 'listening' || state === 'speaking') && (
           <>
-            <div className="absolute inset-0 rounded-full bg-teal-500/15 animate-ping duration-1000"></div>
-            <div className="absolute -inset-2 rounded-full border border-teal-400/20 animate-pulse"></div>
-            <div className="absolute -inset-4 rounded-full border border-cyan-400/10"></div>
+            <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping duration-1000"></div>
+            <div className="absolute -inset-2 rounded-full border border-primary/20 animate-pulse"></div>
+            <div className="absolute -inset-4 rounded-full border border-secondary/15"></div>
           </>
         )}
 
         {/* Outer Glow Halo */}
         <div className={`absolute inset-0 rounded-full blur-xl transition-all duration-700 ${
-          state === 'speaking' 
-            ? 'bg-gradient-to-r from-emerald-500/40 via-teal-400/40 to-cyan-500/40 opacity-90'
+          state === 'speaking'
+            ? 'bg-primary/20 opacity-80'
             : state === 'listening'
-            ? 'bg-gradient-to-r from-teal-400/35 to-cyan-500/35 opacity-80'
+            ? 'bg-primary/15 opacity-70'
             : state === 'calm'
-            ? 'bg-gradient-to-r from-slate-400/20 to-teal-500/20 opacity-60'
-            : 'bg-gradient-to-r from-teal-500/25 via-cyan-500/25 to-blue-500/25 opacity-70'
+            ? 'bg-secondary/10 opacity-50'
+            : 'bg-primary/10 opacity-60'
         }`}></div>
 
         {/* Main Luminous Orb Container */}
-        <div className={`relative ${currentSize.orb} rounded-full transition-all duration-700 flex items-center justify-center overflow-hidden shadow-2xl border border-teal-300/30 ${
-          state === 'listening' ? 'scale-105 border-teal-300/60' : 'animate-breathing-orb'
+        <div className={`relative ${currentSize.orb} rounded-full transition-all duration-700 flex items-center justify-center overflow-hidden shadow-2xl border border-primary/30 ${
+          state === 'listening' ? 'scale-105 border-primary/50' : 'animate-breathing-orb'
         }`}>
           
           {/* Internal Gradient Surface */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-teal-950"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-400/20 via-cyan-600/15 to-transparent"></div>
+          <div className="absolute inset-0 bg-primary-dark"></div>
+          <div className="absolute inset-0 bg-primary/10"></div>
 
           {/* Abstract Facial Geometry (Subtle Presence) */}
           <svg className="w-full h-full p-2.5 opacity-80" viewBox="0 0 100 100" fill="none">
             <defs>
               <linearGradient id="aasraGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#818cf8" stopOpacity="0.4" />
+                <stop offset="0%" stopColor="#527D7D" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#9183A0" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#FFFDFC" stopOpacity="0.35" />
               </linearGradient>
               <linearGradient id="aasraWave" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#14b8a6" />
-                <stop offset="100%" stopColor="#06b6d4" />
+                <stop offset="0%" stopColor="#527D7D" />
+                <stop offset="100%" stopColor="#9183A0" />
               </linearGradient>
             </defs>
 
@@ -98,13 +98,13 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
         </div>
 
         {/* State Badge Dot */}
-        <div className="absolute -bottom-1 right-1 flex items-center space-x-1 bg-slate-900/90 border border-teal-500/40 px-2 py-0.5 rounded-full shadow-lg">
+        <div className="absolute -bottom-1 right-1 flex items-center space-x-1 bg-surface border border-primary/30 px-2 py-0.5 rounded-full shadow-lg">
           <span className={`w-1.5 h-1.5 rounded-full ${
-            state === 'speaking' ? 'bg-emerald-400 animate-ping' :
-            state === 'listening' ? 'bg-cyan-400 animate-pulse' :
-            'bg-teal-400'
+            state === 'speaking' ? 'bg-primary animate-ping' :
+            state === 'listening' ? 'bg-secondary animate-pulse' :
+            'bg-primary'
           }`}></span>
-          <span className="text-[9px] font-medium text-slate-300 uppercase tracking-wider">
+          <span className="text-[9px] font-medium text-text-muted uppercase tracking-wider">
             {state === 'speaking' ? 'AASRA Speaking' : state === 'listening' ? 'AASRA Listening' : 'AASRA Active'}
           </span>
         </div>
@@ -113,10 +113,10 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
 
       {showText && (
         <div className="text-center space-y-1">
-          <h4 className="text-sm font-semibold text-slate-100 tracking-wide flex items-center justify-center space-x-1.5">
+          <h4 className="text-sm font-semibold text-text tracking-wide flex items-center justify-center space-x-1.5">
             <span>AASRA Support Companion</span>
           </h4>
-          {subtext && <p className={`text-slate-400 max-w-sm ${currentSize.text}`}>{subtext}</p>}
+          {subtext && <p className={`text-text-muted max-w-sm ${currentSize.text}`}>{subtext}</p>}
         </div>
       )}
     </div>
