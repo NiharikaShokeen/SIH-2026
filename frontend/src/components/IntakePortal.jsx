@@ -5,6 +5,7 @@ import TraumaChatbot from './TraumaChatbot';
 import IVRSSimulator from './IVRSSimulator';
 import MobileAppView from './MobileAppView';
 import PersonalizedProfileCard from './PersonalizedProfileCard';
+import FacialMonitor from './FacialMonitor';
 import { t } from '../utils/translations';
 
 export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, selectedLanguage }) {
@@ -240,6 +241,11 @@ export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, 
           />
         )}
       </div>
+
+      <FacialMonitor
+        sessionId={assessmentResult?.case_id ?? 'current-intake-session'}
+        apiBase="/api/v1"
+      />
 
     </div>
   );
