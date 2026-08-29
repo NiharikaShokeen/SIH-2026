@@ -6,6 +6,7 @@ import SVIDashboard from './components/SVIDashboard';
 import RecommendationCards from './components/RecommendationCards';
 import CounsellorDashboard from './components/CounsellorDashboard';
 import FairnessAudit from './components/FairnessAudit';
+import VoiceModulatorPanel from './components/VoiceModulatorPanel';
 import { SAMPLE_PRESETS } from './utils/samplePresets';
 import { Cloud } from 'lucide-react';
 
@@ -272,7 +273,13 @@ export default function App() {
         )}
 
         {activeTab === 'fairness' && (
-          <FairnessAudit selectedLanguage={selectedLanguage} />
+          <div className="space-y-8 animate-fade-in">
+            <FairnessAudit selectedLanguage={selectedLanguage} />
+            <VoiceModulatorPanel selectedLanguage={selectedLanguage} />
+            {assessmentResult && (
+              <SVIDashboard result={assessmentResult} selectedLanguage={selectedLanguage} />
+            )}
+          </div>
         )}
 
       </main>
