@@ -4,16 +4,34 @@ export const translations = {
     app_title: "AI Real-Time Stress & Trauma Assessment",
     helpline_tag: "MoSJE • 14566",
     helpline_subtitle: "National Helpline Against Atrocities",
-    tab_intake: "Victim Intake Portal",
+    tab_intake: "Victim Support Space",
     tab_counsellor: "Officer Control Room",
-    tab_fairness: "AI Ethics & Governance",
-    stealth_hide: "Quick Hide",
+    tab_fairness: "AI Governance & Lab",
+    stealth_hide: "Quick Exit",
     stealth_exit: "Exit Public View",
     consent_active: "Consent Active",
     consent_review: "Consent",
     
+    // AASRA Core Experience
+    aasra_hero_heading: "You don't have to go through this alone.",
+    aasra_hero_subtext: "A confidential space to share what you're experiencing and understand what support may be available to you.",
+    aasra_greeting: "Hello, I'm AASRA. You can take your time. You never have to share more than you're comfortable with.",
+    btn_speak_aasra: "Speak with AASRA",
+    btn_type_privately: "Type privately",
+    btn_silent_mode: "I can't speak right now",
+    btn_emergency_support: "Emergency Support (112)",
+    
+    // Emotional Check-In
+    emotional_checkin_title: "How are you feeling right now?",
+    emotional_checkin_subtitle: "This helps us understand how to support you right now. You can skip this at any time.",
+    feel_overwhelmed: "Overwhelmed",
+    feel_afraid: "Afraid or unsafe",
+    feel_distressed: "Distressed",
+    feel_angry: "Angry",
+    feel_skip: "I prefer not to say",
+    
     // Intake Portal
-    intake_channel_label: "Intake Channel:",
+    intake_channel_label: "Support Channel:",
     channel_chatbot: "Trauma Chatbot",
     channel_ivrs: "IVRS Telephonic Intake (14566)",
     channel_mobile: "NHAA Mobile App",
