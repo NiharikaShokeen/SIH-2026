@@ -71,7 +71,34 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
 
       </div>
 
-      {/* Main Control Room Grid */}
+      {/* Priority Escalation Alert Banner for Officers */}
+      {cases.some(c => c.risk_category === 'CRITICAL') && (
+        <div className="bg-slate-900 border border-rose-900/80 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fade-in shadow-xl">
+          <div className="flex items-center space-x-3">
+            <div className="p-2.5 bg-rose-950 border border-rose-800 rounded-xl text-rose-400">
+              <AlertTriangle className="w-5 h-5 animate-pulse" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-rose-300 bg-rose-950 border border-rose-800 px-2 py-0.5 rounded font-mono">
+                  PRIORITY REVIEW REQUIRED
+                </span>
+                <span className="text-xs text-slate-300 font-mono">Protected Case: NHAA-2026-8942</span>
+              </div>
+              <p className="text-xs text-slate-300 mt-1 font-sans">
+                Key Indicators: <strong>Repeated Intimidation • Severe Fear Biomarkers • Escalating Distress Trajectory</strong>
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => onSelectCase && onSelectCase(cases.find(c => c.risk_category === 'CRITICAL'))}
+            className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-md whitespace-nowrap"
+          >
+            Immediate Human Review
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left Column: Priority Queue */}
