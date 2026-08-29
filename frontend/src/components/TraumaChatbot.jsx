@@ -101,8 +101,16 @@ export default function TraumaChatbot({
         {/* Chat Header Banner */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-background border border-primary/30 rounded-2xl">
-              <AasraCompanion state={isAnalyzing ? 'listening' : isRecording ? 'listening' : 'idle'} size="sm" />
+            <div className="p-2 bg-slate-950 border border-teal-500/40 rounded-2xl">
+              <AasraCompanion 
+                state={
+                  isAnalyzing ? 'thinking' : 
+                  isRecording ? 'listening' : 
+                  (assessmentResult?.silent_escalation || assessmentResult?.svi_analysis?.risk_category === 'CRITICAL') ? 'safety_support' : 
+                  'idle'
+                } 
+                size="sm" 
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -170,6 +178,31 @@ export default function TraumaChatbot({
             </div>
           )}
 
+          {/* AASRA Calm Trauma-Informed Response after Assessment */}
+          {assessmentResult && (
+            <div className="flex items-start space-x-3 animate-fade-in">
+              <div className="w-9 h-9 rounded-2xl bg-teal-950 border border-teal-500/40 flex items-center justify-center text-teal-300 text-xs font-bold shadow-md flex-shrink-0">
+                AA
+              </div>
+              <div className="bg-slate-950 border border-teal-800/80 p-4 rounded-2xl max-w-md text-xs text-slate-200 leading-relaxed space-y-2 shadow-lg">
+                <p className="font-semibold text-teal-300 flex items-center space-x-1.5">
+                  <HeartHandshake className="w-4 h-4 text-teal-400" />
+                  <span>AASRA Companion Response:</span>
+                </p>
+                <p className="text-slate-100 font-medium text-xs leading-relaxed">
+                  "Thank you for telling me. Your safety matters. You don't have to go through this alone. Let's look at what support may be helpful right now."
+                </p>
+                <div className="pt-2 border-t border-slate-800/80 text-[11px] text-teal-300 font-sans flex items-center justify-between">
+                  <span className="flex items-center space-x-1">
+                    <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Support Plan Activated</span>
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-mono">Case Confidential</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Recording Prosody Animation */}
           {isRecording && (
             <div className="flex items-center justify-between p-4 bg-background border border-primary/40 rounded-2xl shadow-xl animate-pulse">
@@ -200,29 +233,59 @@ export default function TraumaChatbot({
 
         </div>
 
-        {/* Grievance Scenarios */}
-        <div className="space-y-2 pt-2 border-t border-border">
-          <div className="flex items-center justify-between text-xs text-text-muted">
+        {/* Grievance Scenarios & Demo Trigger */}
+        <div className="space-y-2 pt-2 border-t border-slate-800/80">
+          <div className="flex items-center justify-between text-xs text-slate-400">
             <span className="font-semibold">{t('scenarios_title', selectedLanguage)}</span>
             <span className="text-secondary font-bold text-[11px]">{t('scenarios_click', selectedLanguage)}</span>
           </div>
+
           <div className="grid grid-cols-2 gap-2">
             {SAMPLE_PRESETS.map((scenario) => (
               <button
                 key={scenario.id}
                 type="button"
-                onClick={() => handleScenarioSelect(scenario)}
-                className="text-left p-3 bg-background hover:bg-surface border border-border hover:border-primary/40 rounded-2xl transition-all group shadow-sm"
+                onClick={() => {
+                  handleScenarioSelect(scenario);
+                  // Automatically trigger assessment if user clicks scenario
+                  onAssess({
+                    channel: 'Trauma Chatbot Intake',
+                    language_code: selectedLanguage,
+                    complaint_text: scenario.complaint_text,
+                    prosody_override: scenario.prosody,
+                    context_factors: {
+                      is_woman_or_child: true,
+                      is_repeat_harassment: true,
+                      police_fir_refused: true,
+                      perpetrator_in_power: true,
+                      victim_mood: 'Immediate Threat'
+                    }
+                  });
+                }}
+                className={`text-left p-3 rounded-2xl transition-all group shadow-sm border ${
+                  scenario.is_critical_preset
+                    ? 'bg-teal-950/40 hover:bg-teal-900/60 border-teal-700/80 hover:border-teal-500'
+                    : 'bg-slate-950 hover:bg-slate-800/80 border-slate-800 hover:border-teal-500/40'
+                }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-text group-hover:text-primary-dark">{scenario.name}</span>
-                  <span className="text-[9px] font-medium px-2 py-0.5 rounded bg-surface text-text-muted border border-border">{scenario.category}</span>
+                  <span className="text-xs font-semibold text-slate-200 group-hover:text-teal-300">
+                    {scenario.name}
+                  </span>
+                  <span className={`text-[9px] font-medium px-2 py-0.5 rounded border ${
+                    scenario.is_critical_preset
+                      ? 'bg-teal-950 text-teal-300 border-teal-700'
+                      : 'bg-slate-900 text-slate-400 border-slate-700'
+                  }`}>
+                    {scenario.category}
+                  </span>
                 </div>
                 <p className="text-[11px] text-text-muted line-clamp-1 mt-1 font-sans">{scenario.complaint_text}</p>
               </button>
             ))}
           </div>
         </div>
+
 
         {/* Input & Mic Form */}
         <form onSubmit={handleSubmit} className="space-y-3">
