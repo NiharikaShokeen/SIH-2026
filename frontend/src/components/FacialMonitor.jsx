@@ -87,7 +87,10 @@ export default function FacialMonitor({ sessionId, apiBase = "/api" }) {
 
   useEffect(() => {
     if (consent && streaming && !alertActive) {
-      intervalRef.current = setInterval(captureAndSend, SNAPSHOT_INTERVAL_MS);
+      intervalRef.current = setInterval(
+        captureAndSend,
+        SNAPSHOT_INTERVAL_MS
+      );
       return () => clearInterval(intervalRef.current);
     }
   }, [consent, streaming, alertActive, captureAndSend]);
@@ -95,12 +98,13 @@ export default function FacialMonitor({ sessionId, apiBase = "/api" }) {
   useEffect(() => stopCamera, [stopCamera]);
 
   return (
-    <div className="rounded-xl border border-slate-700 bg-slate-900 p-4 text-slate-200">
+    <div className="rounded-2xl border border-border bg-surface p-5 text-text">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-teal-400">
+        <h3 className="text-sm font-semibold text-primary">
           Facial Distress Signal (completely optional)
         </h3>
-        <label className="flex items-center gap-2 text-xs text-slate-400">
+
+        <label className="flex items-center gap-2 text-xs text-text-muted">
           <input
             type="checkbox"
             checked={consent}
@@ -110,14 +114,14 @@ export default function FacialMonitor({ sessionId, apiBase = "/api" }) {
               if (on) startCamera();
               else stopCamera();
             }}
-            className="accent-teal-500"
+            className="accent-primary"
           />
           I consent to facial analysis
         </label>
       </div>
 
       {alertActive && (
-        <div className="mb-3 rounded-lg border border-red-500 bg-red-950/60 p-3 text-sm text-red-300">
+        <div className="mb-3 rounded-xl border border-risk-critical/30 bg-risk-critical-bg p-3 text-sm text-risk-critical">
           <strong>Critical signal detected.</strong> Connecting you to a human
           counsellor now — this is not automated further. Please stay on this
           screen.
@@ -125,7 +129,7 @@ export default function FacialMonitor({ sessionId, apiBase = "/api" }) {
       )}
 
       {consent && streaming && !alertActive && (
-        <div className="mb-3 rounded-lg border border-slate-700 bg-slate-800 p-3 text-xs text-slate-400">
+        <div className="mb-3 rounded-xl border border-border bg-background p-3 text-xs text-text-muted">
           Assessment is passive and runs in the background — you do not need
           to do anything.
         </div>
@@ -137,22 +141,26 @@ export default function FacialMonitor({ sessionId, apiBase = "/api" }) {
           autoPlay
           muted
           playsInline
-          className={`w-full rounded-lg border border-slate-700 ${
+          className={`w-full rounded-xl border border-border ${
             consent ? "block" : "hidden"
           }`}
         />
+
         <canvas ref={canvasRef} className="hidden" />
 
         {lastResult && (
-          <div className="rounded-lg border border-slate-700 bg-slate-800 p-3 text-xs">
-            <div className="mb-1 text-slate-400">Last signal</div>
+          <div className="rounded-xl border border-border bg-background p-3 text-xs text-text">
+            <div className="mb-1 text-text-muted">Last signal</div>
+
             {lastResult.modality_available ? (
               <>
                 <div>Dominant: {lastResult.dominant_emotion ?? "—"}</div>
-                <div>Score: {lastResult.score?.toFixed?.(0) ?? 0}/100</div>
+                <div>
+                  Score: {lastResult.score?.toFixed?.(0) ?? 0}/100
+                </div>
               </>
             ) : (
-              <div className="text-slate-500">
+              <div className="text-text-muted">
                 {lastResult.reasons?.[0] ?? "modality unavailable"}
               </div>
             )}
@@ -160,10 +168,14 @@ export default function FacialMonitor({ sessionId, apiBase = "/api" }) {
         )}
       </div>
 
-      {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
+      {error && (
+        <p className="mt-2 text-xs text-risk-critical">
+          {error}
+        </p>
+      )}
 
       {!consent && (
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-text-muted">
           Facial analysis is optional and off by default. Enabling it starts
           your camera; frames are analyzed and discarded — not stored or
           streamed continuously.
