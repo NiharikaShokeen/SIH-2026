@@ -8,6 +8,7 @@ import CounsellorDashboard from './components/CounsellorDashboard';
 import FairnessAudit from './components/FairnessAudit';
 import { SAMPLE_PRESETS } from './utils/samplePresets';
 import { Cloud } from 'lucide-react';
+import VoiceRecorder from './components/VoiceRecorder';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('intake'); // 'intake' | 'counsellor' | 'fairness'
@@ -252,6 +253,9 @@ export default function App() {
               isAnalyzing={isAnalyzing}
               selectedLanguage={selectedLanguage}
             />
+
+            <VoiceRecorder />
+            
 
             {assessmentResult && (
               <div className="space-y-8 border-t border-slate-800/80 pt-8">

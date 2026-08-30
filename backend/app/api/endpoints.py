@@ -50,8 +50,51 @@ def analyze_text(req: TextAnalysisRequest):
     return nlp_engine.analyze_narrative(req.text, req.language_code)
 
 @router.post("/analyze/speech")
-def analyze_speech(custom_prosody: Optional[Dict[str, float]] = None):
-    return speech_engine.analyze_audio_features(custom_prosody=custom_prosody)
+async def analyze_speech(file: UploadFile = File(...)):
+    """
+    Receive recorded audio from the React frontend
+    and pass it to the speech analytics engine.
+    """
+
+    print("\n========== SPEECH UPLOAD ==========")
+    print("Filename:", file.filename)
+    print("Content type:", file.content_type)
+
+    if not file.content_type or not file.content_type.startswith("audio/"):
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded file must be an audio file."
+        )
+
+    # Read uploaded audio
+    audio_data = await file.read()
+
+    print("Audio received!")
+    print("Audio size:", len(audio_data), "bytes")
+
+    if not audio_data:
+        raise HTTPException(
+            status_code=400,
+            detail="Audio file is empty."
+        )
+
+    # Send audio to speech engine
+    speech_result = speech_engine.analyze_audio_features(
+        audio_data=audio_data
+    )
+
+    print("Speech analysis completed.")
+    print("Acoustic stress:", speech_result["acoustic_stress_score"])
+    print("===================================\n")
+
+    # Add audio information to response
+    speech_result["audio_info"] = {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "size_bytes": len(audio_data)
+    }
+
+    return speech_result
 
 @router.post("/assess")
 def full_trauma_assessment(req: FullAssessmentRequest):
