@@ -8,7 +8,7 @@ import PersonalizedProfileCard from './PersonalizedProfileCard';
 import FacialMonitor from './FacialMonitor';
 import { t } from '../utils/translations';
 
-export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, selectedLanguage }) {
+export default function IntakePortal({ onAssess, assessmentResult, assessmentError, isAnalyzing, selectedLanguage }) {
   const [channel, setChannel] = useState('chatbot');
   const [showProfile, setShowProfile] = useState(false);
   const [isSilentMode, setIsSilentMode] = useState(false);
@@ -41,13 +41,20 @@ export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, 
             </p>
 
             <div className="pt-2 p-3 bg-background rounded-2xl border border-border text-xs text-primary-dark italic font-serif leading-relaxed">
-              "{t('aasra_greeting', selectedLanguage)}"
+              "{isAnalyzing 
+                ? "Thank you for sharing that. I'm taking a moment to understand what support may be helpful."
+                : t('aasra_greeting', selectedLanguage)}"
             </div>
           </div>
 
           {/* AASRA Visual Companion Orb */}
           <div className="flex-shrink-0">
-            <AasraCompanion state={isAnalyzing ? 'listening' : 'idle'} size="lg" showText={true} subtext="Here for you" />
+            <AasraCompanion 
+              state={isAnalyzing ? 'thinking' : assessmentResult ? 'safety_support' : 'idle'} 
+              size="lg" 
+              showText={true} 
+              subtext={isAnalyzing ? "Understanding what support may help..." : assessmentResult ? "Support Plan Active" : "Here for you"} 
+            />
           </div>
 
         </div>
@@ -195,7 +202,7 @@ export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, 
           type="button"
           onClick={() => setShowProfile(!showProfile)}
           className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
-            showProfile
+            showProfile || assessmentResult
               ? 'bg-primary/10 border-primary/40 text-primary-dark'
               : 'bg-background hover:bg-surface border-border text-text-muted'
           }`}
@@ -206,8 +213,11 @@ export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, 
       </div>
 
       {/* Expandable Support Plan Card */}
-      {showProfile && (
-        <PersonalizedProfileCard selectedLanguage={selectedLanguage} />
+      {(showProfile || assessmentResult) && (
+        <PersonalizedProfileCard 
+          assessmentResult={assessmentResult}
+          selectedLanguage={selectedLanguage} 
+        />
       )}
 
       {/* Active Support Channel */}
@@ -216,6 +226,7 @@ export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, 
           <TraumaChatbot
             onAssess={onAssess}
             assessmentResult={assessmentResult}
+            assessmentError={assessmentError}
             isAnalyzing={isAnalyzing}
             selectedLanguage={selectedLanguage}
             isSilentMode={isSilentMode}
@@ -250,3 +261,4 @@ export default function IntakePortal({ onAssess, assessmentResult, isAnalyzing, 
     </div>
   );
 }
+

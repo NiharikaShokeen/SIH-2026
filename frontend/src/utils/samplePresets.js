@@ -1,11 +1,62 @@
 export const SAMPLE_PRESETS = [
   {
-    id: "preset-1",
-    name: "Sunita Devi (Hathras, UP)",
+    id: "preset-low",
+    name: "Scenario 1: Low / Moderate Concern",
+    category: "Moderate Concern",
+    is_critical_preset: false,
+    complaint_text: "I have been feeling stressed and unsafe lately, but I am currently in a safe place.",
+    detected_indicators: ["General Distress", "Currently Safe Location"],
+    prosody: {
+      pitch_mean: 195.0,
+      pitch_std: 22.0,
+      jitter: 0.015,
+      shimmer: 0.030,
+      pause_ratio: 0.20,
+      speaking_rate: 2.6,
+      energy_variance: 10.0
+    }
+  },
+  {
+    id: "preset-high",
+    name: "Scenario 2: High Concern",
+    category: "High Threat",
+    is_critical_preset: false,
+    complaint_text: "I have been repeatedly threatened and I am afraid that the situation may get worse.",
+    detected_indicators: ["Repeated Intimidation", "Fear Signals", "Escalation Threat"],
+    prosody: {
+      pitch_mean: 230.0,
+      pitch_std: 38.0,
+      jitter: 0.028,
+      shimmer: 0.052,
+      pause_ratio: 0.32,
+      speaking_rate: 2.0,
+      energy_variance: 15.0
+    }
+  },
+  {
+    id: "preset-critical",
+    name: "Scenario 3: Critical Concern",
     category: "Critical Escalation",
     is_critical_preset: true,
+    complaint_text: "I am receiving repeated threats, I am afraid for my family, and I don't know where to go for help.",
+    detected_indicators: ["Active Death Threat", "Family Vulnerability", "Imminent Danger"],
+    prosody: {
+      pitch_mean: 255.0,
+      pitch_std: 52.0,
+      jitter: 0.042,
+      shimmer: 0.070,
+      pause_ratio: 0.40,
+      speaking_rate: 1.6,
+      energy_variance: 20.0
+    }
+  },
+  {
+    id: "preset-hathras",
+    name: "Sunita Devi (Hathras, UP)",
+    category: "Atrocity At-Risk",
+    is_critical_preset: true,
     complaint_text: "Main Hathras se bol rahi hu. Gaon ke sarpanch aur unke gundon ne mere pati ko lathi se mara. Hamari zameen pe qabza kar liya aur keh rahe hain gaau chhod do varna jaan se maar denge. Police thane gayi toh daroga ne FIR likhne se manaa kar diya. Mujhe ab marne ka man kar raha hai, koi rasta nahi dikh raha.",
-    detected_indicators: ["Repeated Intimidation", "Severe Fear Signals", "Family Safety Concern", "Suicidal Ideation Flag"],
+    detected_indicators: ["Physical Violence", "Police Refusal", "Land Encroachment", "Suicidal Ideation Flag"],
     prosody: {
       pitch_mean: 245.0,
       pitch_std: 48.2,
@@ -15,54 +66,7 @@ export const SAMPLE_PRESETS = [
       speaking_rate: 1.7,
       energy_variance: 18.5
     }
-  },
-  {
-    id: "preset-2",
-    name: "Ramesh Kumar (Gwalior, MP)",
-    category: "Social Boycott",
-    complaint_text: "Humare basti ka paani ka kuan band kar diya gaya hai. Jaati ke naam par bahiishkaar kar diya hai. Dukaan se ration bhi nahi de rahe hain. Bolte hain tum dalit ho yahan se bhaag jao. Humare bache bhukhe hain.",
-    detected_indicators: ["Social Exclusion", "Essential Services Cutoff", "Community Vulnerability"],
-    prosody: {
-      pitch_mean: 210.0,
-      pitch_std: 32.0,
-      jitter: 0.022,
-      shimmer: 0.045,
-      pause_ratio: 0.28,
-      speaking_rate: 2.2,
-      energy_variance: 12.0
-    }
-  },
-  {
-    id: "preset-3",
-    name: "Anita Valmiki (Jaipur, RJ)",
-    category: "Caste Harassment",
-    complaint_text: "I was subjected to explicit casteist slurs at my workplace and threatened with violence if I report to higher authorities. They tore my official files and warned me to withdraw my previous complaint under SC/ST Act.",
-    detected_indicators: ["Workplace Harassment", "Explicit Slurs", "Witness Retaliation Threat"],
-    prosody: {
-      pitch_mean: 220.0,
-      pitch_std: 30.0,
-      jitter: 0.019,
-      shimmer: 0.038,
-      pause_ratio: 0.24,
-      speaking_rate: 2.5,
-      energy_variance: 14.0
-    }
-  },
-  {
-    id: "preset-4",
-    name: "Harish Meena (Udaipur, RJ)",
-    category: "Land Displacement",
-    complaint_text: "Hamare khet ki baad tod di gayi. Local dominant group wale bandook dikhakar bolte hain ki case wapas lo varna parivaar ko khatam kar denge. Police help nahi kar rahi.",
-    detected_indicators: ["Armed Intimidation", "Land Encroachment", "Family Death Threat"],
-    prosody: {
-      pitch_mean: 235.0,
-      pitch_std: 42.0,
-      jitter: 0.031,
-      shimmer: 0.055,
-      pause_ratio: 0.34,
-      speaking_rate: 1.9,
-      energy_variance: 16.0
-    }
   }
 ];
+
 

@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { Activity, ShieldAlert, CheckCircle, Clock, Search, AlertTriangle, TrendingUp, UserCheck } from 'lucide-react';
+import { Activity, ShieldAlert, CheckCircle, Clock, Search, AlertTriangle, TrendingUp, UserCheck, RefreshCw } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { t } from '../utils/translations';
 
-export default function CounsellorDashboard({ cases, onSelectCase, activeCase, selectedLanguage = 'en' }) {
+export default function CounsellorDashboard({ cases, onSelectCase, activeCase, onRefreshCases, selectedLanguage = 'en' }) {
   const [filter, setFilter] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    if (onRefreshCases) {
+      setIsRefreshing(true);
+      await onRefreshCases();
+      setTimeout(() => setIsRefreshing(false), 500);
+    }
+  };
 
   const filteredCases = cases.filter(c => {
     if (filter !== 'ALL' && c.risk_category !== filter) return false;
@@ -30,6 +39,25 @@ export default function CounsellorDashboard({ cases, onSelectCase, activeCase, s
   return (
     <div className="space-y-6 animate-fade-in">
       
+      {/* Header bar with Refresh Cases button */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-border">
+        <div>
+          <h2 className="text-xl font-extrabold text-primary-dark">Officer & Counsellor Control Room</h2>
+          <p className="text-xs text-text-muted">Real-time SVI case queue, priority escalation alerts & intervention dispatch</p>
+        </div>
+
+        {onRefreshCases && (
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="px-3.5 py-2 bg-surface hover:bg-background border border-border text-primary-dark rounded-xl text-xs font-bold shadow-sm transition-all flex items-center space-x-2"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-primary ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span>{isRefreshing ? 'Refreshing Queue...' : 'Refresh Case Feed'}</span>
+          </button>
+        )}
+      </div>
+
       {/* Top Stats Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
