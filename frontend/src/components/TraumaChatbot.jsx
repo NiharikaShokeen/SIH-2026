@@ -239,12 +239,12 @@ export default function TraumaChatbot({
 
           {/* Recording Prosody Animation */}
           {isRecording && (
-            <div className="flex items-center justify-between p-4 bg-background border border-primary/40 rounded-2xl shadow-xl animate-pulse">
+            <div className="flex items-center justify-between p-4 bg-background border border-primary/40 rounded-2xl shadow-sm animate-pulse">
               <div className="flex items-center space-x-3">
                 <Volume2 className="w-5 h-5 text-primary animate-bounce" />
                 <div>
-                  <span className="text-xs font-semibold text-white block">Listening & Capturing Voice Biomarkers...</span>
-                  <span className="text-[10px] text-primary-dark font-mono">F0 Pitch • Jitter • Shimmer • Pauses</span>
+                  <span className="text-xs font-bold text-primary-dark block">Listening & Capturing Voice Biomarkers...</span>
+                  <span className="text-[10px] text-text-muted font-mono">F0 Pitch • Jitter • Shimmer • Pauses</span>
                 </div>
               </div>
 
@@ -268,13 +268,13 @@ export default function TraumaChatbot({
         </div>
 
         {/* Grievance Scenarios & Demo Trigger */}
-        <div className="space-y-2 pt-2 border-t border-slate-800/80">
-          <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">{t('scenarios_title', selectedLanguage)}</span>
+        <div className="space-y-2 pt-2 border-t border-border">
+          <div className="flex items-center justify-between text-xs text-primary-dark">
+            <span className="font-bold">{t('scenarios_title', selectedLanguage)}</span>
             <span className="text-secondary font-bold text-[11px]">{t('scenarios_click', selectedLanguage)}</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             {SAMPLE_PRESETS.map((scenario) => (
               <button
                 key={scenario.id}
@@ -296,20 +296,20 @@ export default function TraumaChatbot({
                     }
                   });
                 }}
-                className={`text-left p-3 rounded-2xl transition-all group shadow-sm border ${
+                className={`text-left p-3.5 rounded-2xl transition-all group shadow-sm border ${
                   scenario.is_critical_preset
-                    ? 'bg-teal-950/40 hover:bg-teal-900/60 border-teal-700/80 hover:border-teal-500'
-                    : 'bg-slate-950 hover:bg-slate-800/80 border-slate-800 hover:border-teal-500/40'
+                    ? 'bg-[#E8C1CA]/30 hover:bg-[#E8C1CA]/50 border-[#C7748B]/60 hover:border-[#C7748B]'
+                    : 'bg-surface hover:bg-[#F0ECE1] border-border hover:border-primary'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-200 group-hover:text-teal-300">
+                  <span className="text-xs font-bold text-primary-dark group-hover:text-primary">
                     {scenario.name}
                   </span>
-                  <span className={`text-[9px] font-medium px-2 py-0.5 rounded border ${
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded border ${
                     scenario.is_critical_preset
-                      ? 'bg-teal-950 text-teal-300 border-teal-700'
-                      : 'bg-slate-900 text-slate-400 border-slate-700'
+                      ? 'bg-[#E8C1CA] text-[#72243E] border-[#C7748B]'
+                      : 'bg-background text-primary-dark border-border'
                   }`}>
                     {scenario.category}
                   </span>
