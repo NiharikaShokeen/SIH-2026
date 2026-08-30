@@ -8,6 +8,7 @@ import { t } from '../utils/translations';
 export default function TraumaChatbot({ 
   onAssess, 
   assessmentResult, 
+  assessmentError,
   isAnalyzing, 
   selectedLanguage, 
   isSilentMode = false,
@@ -178,26 +179,59 @@ export default function TraumaChatbot({
             </div>
           )}
 
-          {/* AASRA Calm Trauma-Informed Response after Assessment */}
-          {assessmentResult && (
+          {/* AASRA Thinking State Bubble */}
+          {isAnalyzing && (
             <div className="flex items-start space-x-3 animate-fade-in">
-              <div className="w-9 h-9 rounded-2xl bg-teal-950 border border-teal-500/40 flex items-center justify-center text-teal-300 text-xs font-bold shadow-md flex-shrink-0">
+              <div className="w-9 h-9 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary-dark text-xs font-bold shadow-md flex-shrink-0">
                 AA
               </div>
-              <div className="bg-slate-950 border border-teal-800/80 p-4 rounded-2xl max-w-md text-xs text-slate-200 leading-relaxed space-y-2 shadow-lg">
-                <p className="font-semibold text-teal-300 flex items-center space-x-1.5">
-                  <HeartHandshake className="w-4 h-4 text-teal-400" />
+              <div className="bg-background border border-primary/40 p-4 rounded-2xl max-w-md text-xs text-text leading-relaxed space-y-1.5 shadow-md animate-pulse">
+                <p className="font-semibold text-primary-dark flex items-center space-x-1.5">
+                  <Sparkles className="w-4 h-4 text-primary animate-spin" />
+                  <span>AASRA Companion:</span>
+                </p>
+                <p className="text-text-muted italic">
+                  "Thank you for sharing that. I'm taking a moment to understand what support may be helpful..."
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Backend Connection Error Alert */}
+          {assessmentError && (
+            <div className="flex items-start space-x-3 animate-fade-in">
+              <div className="w-9 h-9 rounded-2xl bg-risk-critical-bg border border-risk-critical/40 flex items-center justify-center text-risk-critical text-xs font-bold shadow-md flex-shrink-0">
+                !
+              </div>
+              <div className="bg-risk-critical-bg border border-risk-critical/40 p-4 rounded-2xl max-w-md text-xs text-risk-critical leading-relaxed space-y-1.5 shadow-md">
+                <p className="font-bold flex items-center space-x-1.5">
+                  <span>Connection Notice:</span>
+                </p>
+                <p>{assessmentError}</p>
+              </div>
+            </div>
+          )}
+
+          {/* AASRA Calm Trauma-Informed Response after Assessment */}
+          {assessmentResult && !isAnalyzing && (
+            <div className="flex items-start space-x-3 animate-fade-in">
+              <div className="w-9 h-9 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-center text-primary-dark text-xs font-bold shadow-md flex-shrink-0">
+                AA
+              </div>
+              <div className="bg-background border border-primary/40 p-4 rounded-2xl max-w-md text-xs text-text leading-relaxed space-y-2 shadow-lg">
+                <p className="font-semibold text-primary-dark flex items-center space-x-1.5">
+                  <HeartHandshake className="w-4 h-4 text-primary" />
                   <span>AASRA Companion Response:</span>
                 </p>
-                <p className="text-slate-100 font-medium text-xs leading-relaxed">
-                  "Thank you for telling me. Your safety matters. You don't have to go through this alone. Let's look at what support may be helpful right now."
+                <p className="text-text font-medium text-xs leading-relaxed">
+                  "Thank you for telling me. Your safety matters. You don't have to go through this alone. Let's look at what support options may be helpful right now."
                 </p>
-                <div className="pt-2 border-t border-slate-800/80 text-[11px] text-teal-300 font-sans flex items-center justify-between">
+                <div className="pt-2 border-t border-border text-[11px] text-primary-dark font-sans flex items-center justify-between">
                   <span className="flex items-center space-x-1">
-                    <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                    <Shield className="w-3.5 h-3.5 text-risk-low" />
                     <span>Support Plan Activated</span>
                   </span>
-                  <span className="text-[10px] text-slate-400 font-mono">Case Confidential</span>
+                  <span className="text-[10px] text-text-muted font-mono">Protected Case: {assessmentResult.case_id}</span>
                 </div>
               </div>
             </div>

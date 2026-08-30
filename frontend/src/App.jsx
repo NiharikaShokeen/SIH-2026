@@ -18,73 +18,51 @@ export default function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isStealthMode, setIsStealthMode] = useState(false);
   const [assessmentResult, setAssessmentResult] = useState(null);
+  const [assessmentError, setAssessmentError] = useState(null);
   const [casesList, setCasesList] = useState([]);
   const [activeCase, setActiveCase] = useState(null);
   const [priorityNotification, setPriorityNotification] = useState(null);
 
-  // Load initial cases
-  useEffect(() => {
-    fetch('/api/v1/cases')
-      .then(res => res.json())
-      .then(data => {
+  const fetchCases = async () => {
+    try {
+      const res = await fetch('/api/v1/cases');
+      if (res.ok) {
+        const data = await res.json();
         if (data.cases) {
           setCasesList(data.cases);
+          return data.cases;
         }
-      })
-      .catch(err => {
-        console.log('Using initial cases');
-        setCasesList([
-          {
-            case_id: "NHAA-2026-8942",
-            victim_name: "Sunita Devi (Anonymized)",
-            channel: "Chatbot Intake",
-            district: "Hathras, Uttar Pradesh",
-            svi_score: 84.5,
-            risk_category: "CRITICAL",
-            complaint_text: SAMPLE_PRESETS[0].complaint_text,
-            historical_svi: [42.0, 58.5, 84.5]
-          },
-          {
-            case_id: "NHAA-2026-7411",
-            victim_name: "Ramesh Kumar",
-            channel: "IVRS Telephonic (14566)",
-            district: "Gwalior, Madhya Pradesh",
-            svi_score: 62.0,
-            risk_category: "HIGH",
-            complaint_text: SAMPLE_PRESETS[1].complaint_text,
-            historical_svi: [35.0, 62.0]
-          },
-          {
-            case_id: "NHAA-2026-6109",
-            victim_name: "Anita Valmiki",
-            channel: "Mobile Application",
-            district: "Jaipur, Rajasthan",
-            svi_score: 45.0,
-            risk_category: "MODERATE",
-            complaint_text: SAMPLE_PRESETS[2].complaint_text,
-            historical_svi: [28.0, 45.0]
-          }
-        ]);
-      });
+      }
+    } catch (err) {
+      console.log('Using local cases cache:', err);
+    }
+  };
+
+  // Load initial cases
+  useEffect(() => {
+    fetchCases();
   }, []);
 
   const handleRunAssessment = async (intakePayload) => {
     setIsAnalyzing(true);
+    setAssessmentError(null);
     try {
       const response = await fetch('/api/v1/assess', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(intakePayload)
       });
-      if (!response.ok) throw new Error('API Assessment Failed');
+      if (!response.ok) {
+        throw new Error(`API Assessment Failed (Status: ${response.status})`);
+      }
       const data = await response.json();
       setAssessmentResult(data);
       
       const updatedCase = {
         case_id: data.case_id,
-        victim_name: "Sunita Devi (Anonymized)",
+        victim_name: intakePayload.complaint_text.includes('Hathras') ? "Sunita Devi (Anonymized)" : "Anonymous Complainant",
         channel: intakePayload.channel,
-        district: "Intake Control Room",
+        district: intakePayload.complaint_text.includes('Hathras') ? "Hathras, UP" : "Intake Control Room",
         svi_score: data.svi_analysis.svi_score,
         risk_category: data.svi_analysis.risk_category,
         complaint_text: intakePayload.complaint_text,
@@ -94,7 +72,9 @@ export default function App() {
         speech_analysis: data.speech_analysis,
         recommendations: data.recommendations
       };
-      setCasesList(prev => [updatedCase, ...prev]);
+      
+      // Update local case state immediately and sync with backend
+      setCasesList(prev => [updatedCase, ...prev.filter(c => c.case_id !== data.case_id)]);
       setActiveCase(updatedCase);
 
       if (data.silent_escalation || data.svi_analysis?.risk_category === 'CRITICAL') {
@@ -102,114 +82,17 @@ export default function App() {
           case_id: updatedCase.case_id,
           svi_score: updatedCase.svi_score,
           risk_category: 'CRITICAL',
-          indicators: ["Repeated Intimidation", "Severe Fear Signals", "Family Safety Concern"],
-          recommended: "Immediate human review",
+          indicators: data.nlp_analysis?.trauma_flags?.length > 0
+            ? data.nlp_analysis.trauma_flags
+            : ["Repeated Intimidation", "Severe Fear Signals", "Family Safety Concern"],
+          recommended: "Immediate human review & 1-on-1 trauma counselling",
           caseObj: updatedCase
         });
       }
 
     } catch (err) {
-      console.log('API call fallback to local engine computation:', err);
-      
-      const isCritical = intakePayload.complaint_text.toLowerCase().includes('marne') || intakePayload.complaint_text.toLowerCase().includes('suicide') || intakePayload.complaint_text.toLowerCase().includes('kill') || intakePayload.complaint_text.includes('Hathras');
-      const rawSvi = isCritical ? 86.5 : 64.0;
-
-      const fallbackResult = {
-        case_id: `NHAA-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-        silent_escalation: isCritical,
-        speech_analysis: {
-          acoustic_stress_score: isCritical ? 82.0 : 58.0,
-          emotional_indicators: isCritical 
-            ? ["High Pitch Instability (Tremor)", "Severe Hesitation Pauses", "Vocal Cord Micro-Tremors"] 
-            : ["Moderate Vocal Instability"]
-        },
-        nlp_analysis: {
-          linguistic_trauma_score: isCritical ? 89.0 : 62.0,
-          detected_language: selectedLanguage === 'auto' ? 'Hindi (Code-Mixed)' : selectedLanguage,
-          trauma_flags: isCritical 
-            ? ["Suicidal Ideation / Extreme Distress", "Physical / Sexual Atrocity Narrative", "Active Death Threat"] 
-            : ["Caste Slurs / Discrimination"],
-          entities: { has_suicidal_flag: isCritical }
-        },
-        svi_analysis: {
-          svi_score: rawSvi,
-          risk_category: isCritical ? 'CRITICAL' : 'HIGH',
-          color_code: isCritical ? '#EF4444' : '#F97316',
-          sla_response_minutes: isCritical ? 15 : 60,
-          sub_scores: {
-            acoustic_stress: isCritical ? 82.0 : 58.0,
-            linguistic_trauma: isCritical ? 89.0 : 62.0,
-            contextual_risk: 75.0,
-            longitudinal_trend: 70.0
-          },
-          explainable_rationale: [
-            `Acoustic Vocal Stress contributes ${isCritical ? '28.7' : '20.3'} pts (Pitch micro-tremors).`,
-            `Linguistic Trauma & Sentiment contributes ${isCritical ? '40.0' : '27.9'} pts (Keyword match).`,
-            `Contextual Atrocity Severity contributes 9.0 pts (SC/ST PoA Act severity).`,
-            `Longitudinal Risk Trend contributes 5.6 pts (Escalating interaction delta).`
-          ]
-        },
-        recommendations: [
-          {
-            vertical: "Emergency Police Intervention",
-            agency: "District Police Control Room & 112 Dispatch",
-            priority: isCritical ? "CRITICAL" : "HIGH",
-            action_item: "Dispatch immediate police escort / Station House Officer to victim location under SC/ST PoA Act Sec 15A.",
-            why: "High physical danger or death threat detected in intake narrative."
-          },
-          {
-            vertical: "Psychological Counselling",
-            agency: "NHAA Tele-Mental Health Specialist",
-            priority: "CRITICAL",
-            action_item: "Immediate 1-on-1 trauma-informed counselling session.",
-            why: "Elevated trauma index & distress biomarkers identified."
-          },
-          {
-            vertical: "Witness & Victim Protection",
-            agency: "State SC/ST Protection Cell",
-            priority: "HIGH",
-            action_item: "Provide secure safe-house relocation under Witness Protection Scheme 2018.",
-            why: "Accused intimidation or threat of witness tampering detected."
-          },
-          {
-            vertical: "Free Legal Aid & Prosecution Support",
-            agency: "District Legal Services Authority (DLSA)",
-            priority: "HIGH",
-            action_item: "Assign dedicated advocate for FIR drafting under SC/ST PoA Act.",
-            why: "Legal rights violation and systemic administrative grievance."
-          }
-        ]
-      };
-
-      setAssessmentResult(fallbackResult);
-      const fallbackCase = {
-        case_id: fallbackResult.case_id,
-        victim_name: "Sunita Devi (Anonymized)",
-        channel: intakePayload.channel,
-        district: "Hathras, UP",
-        svi_score: fallbackResult.svi_analysis.svi_score,
-        risk_category: fallbackResult.svi_analysis.risk_category,
-        complaint_text: intakePayload.complaint_text,
-        historical_svi: [40.0, 55.0, fallbackResult.svi_analysis.svi_score],
-        svi_analysis: fallbackResult.svi_analysis,
-        nlp_analysis: fallbackResult.nlp_analysis,
-        speech_analysis: fallbackResult.speech_analysis,
-        recommendations: fallbackResult.recommendations
-      };
-      setCasesList(prev => [fallbackCase, ...prev]);
-      setActiveCase(fallbackCase);
-
-      if (isCritical) {
-        setPriorityNotification({
-          case_id: fallbackCase.case_id,
-          svi_score: fallbackCase.svi_score,
-          risk_category: 'CRITICAL',
-          indicators: ["Repeated Intimidation", "Severe Fear Signals", "Family Safety Concern"],
-          recommended: "Immediate human review",
-          caseObj: fallbackCase
-        });
-      }
-
+      console.error('Backend assessment connection error:', err);
+      setAssessmentError("I'm having trouble connecting to the support system right now. Please try again.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -274,6 +157,7 @@ export default function App() {
             <IntakePortal
               onAssess={handleRunAssessment}
               assessmentResult={assessmentResult}
+              assessmentError={assessmentError}
               isAnalyzing={isAnalyzing}
               selectedLanguage={selectedLanguage}
             />
@@ -292,6 +176,7 @@ export default function App() {
             cases={casesList}
             activeCase={activeCase}
             onSelectCase={(c) => setActiveCase(c)}
+            onRefreshCases={fetchCases}
             selectedLanguage={selectedLanguage}
           />
         )}
