@@ -30,17 +30,17 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
         {/* Concentric Ambient Waves when Listening / Speaking / Thinking */}
         {(state === 'listening' || state === 'speaking' || state === 'thinking') && (
           <>
-            <div className="absolute inset-0 rounded-full bg-teal-500/15 animate-ping duration-1000 motion-reduce:animate-none"></div>
-            <div className="absolute -inset-2 rounded-full border border-teal-400/20 animate-pulse motion-reduce:animate-none"></div>
-            <div className="absolute -inset-4 rounded-full border border-cyan-400/10"></div>
+            <div className="absolute inset-0 rounded-full bg-primary/15 animate-ping duration-1000 motion-reduce:animate-none"></div>
+            <div className="absolute -inset-2 rounded-full border border-primary/20 animate-pulse motion-reduce:animate-none"></div>
+            <div className="absolute -inset-4 rounded-full border border-secondary/10"></div>
           </>
         )}
 
         {/* Calm Serene Waves during Safety Support */}
         {isSafetySupport && (
           <>
-            <div className="absolute -inset-2 rounded-full bg-teal-400/10 animate-pulse duration-1000 motion-reduce:animate-none"></div>
-            <div className="absolute -inset-4 rounded-full border border-emerald-400/20"></div>
+            <div className="absolute -inset-2 rounded-full bg-primary/10 animate-pulse duration-1000 motion-reduce:animate-none"></div>
+            <div className="absolute -inset-4 rounded-full border border-risk-low/20"></div>
           </>
         )}
 
@@ -49,28 +49,28 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
           state === 'speaking'
             ? 'bg-primary/20 opacity-80'
             : state === 'listening'
-            ? 'bg-gradient-to-r from-teal-400/35 to-cyan-500/35 opacity-80'
+            ? 'bg-gradient-to-r from-primary/35 to-secondary/35 opacity-80'
             : state === 'thinking'
-            ? 'bg-gradient-to-r from-indigo-500/35 via-cyan-400/35 to-teal-400/35 opacity-80'
+            ? 'bg-gradient-to-r from-secondary/35 via-primary/30 to-primary-dark/25 opacity-80'
             : isSafetySupport
-            ? 'bg-gradient-to-r from-teal-400/30 via-emerald-400/30 to-amber-300/25 opacity-85'
-            : 'bg-gradient-to-r from-teal-500/25 via-cyan-500/25 to-blue-500/25 opacity-70'
+            ? 'bg-gradient-to-r from-primary/30 via-risk-low/25 to-secondary/20 opacity-85'
+            : 'bg-gradient-to-r from-primary/25 via-primary-dark/20 to-secondary/15 opacity-70'
         }`}></div>
 
         {/* Main Luminous Orb Container */}
         <div className={`relative ${currentSize.orb} rounded-full transition-all duration-700 flex items-center justify-center overflow-hidden shadow-2xl border ${
-          state === 'listening' ? 'scale-105 border-teal-300/60' :
-          state === 'thinking' ? 'border-indigo-300/60 animate-pulse' :
-          isSafetySupport ? 'border-emerald-300/60 bg-teal-950/80' :
-          'border-teal-300/30 animate-breathing-orb motion-reduce:animate-none'
+          state === 'listening' ? 'scale-105 border-primary/60' :
+          state === 'thinking' ? 'border-secondary/60 animate-pulse' :
+          isSafetySupport ? 'border-risk-low/50 bg-primary-dark/80' :
+          'border-primary/30 animate-breathing-orb motion-reduce:animate-none'
         }`}>
           
           {/* Internal Gradient Surface */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-slate-950 via-slate-900 to-teal-950"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-text via-primary-dark to-primary"></div>
           <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${
             isSafetySupport 
-              ? 'from-teal-400/30 via-emerald-500/20 to-transparent' 
-              : 'from-teal-400/20 via-cyan-600/15 to-transparent'
+              ? 'from-primary/30 via-risk-low/20 to-transparent' 
+              : 'from-primary/20 via-secondary/15 to-transparent'
           }`}></div>
 
           {/* Abstract Facial Geometry (Subtle Presence) */}
@@ -82,9 +82,9 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
                 <stop offset="100%" stopColor="#FFFDFC" stopOpacity="0.35" />
               </linearGradient>
               <linearGradient id="aasraWarmGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#34d399" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#2dd4bf" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#fcd34d" stopOpacity="0.5" />
+                <stop offset="0%" stopColor="#527D7D" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#639922" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#9183A0" stopOpacity="0.5" />
               </linearGradient>
             </defs>
 
@@ -130,11 +130,11 @@ export default function AasraCompanion({ state = 'idle', size = 'md', showText =
         {/* State Badge Dot */}
         <div className="absolute -bottom-1 right-1 flex items-center space-x-1 bg-surface border border-primary/30 px-2 py-0.5 rounded-full shadow-lg">
           <span className={`w-1.5 h-1.5 rounded-full ${
-            state === 'speaking' ? 'bg-emerald-400 animate-ping motion-reduce:animate-none' :
-            state === 'listening' ? 'bg-cyan-400 animate-pulse motion-reduce:animate-none' :
-            state === 'thinking' ? 'bg-indigo-400 animate-pulse motion-reduce:animate-none' :
-            isSafetySupport ? 'bg-emerald-300 animate-pulse motion-reduce:animate-none' :
-            'bg-teal-400'
+            state === 'speaking' ? 'bg-primary animate-ping motion-reduce:animate-none' :
+            state === 'listening' ? 'bg-primary animate-pulse motion-reduce:animate-none' :
+            state === 'thinking' ? 'bg-secondary animate-pulse motion-reduce:animate-none' :
+            isSafetySupport ? 'bg-risk-low animate-pulse motion-reduce:animate-none' :
+            'bg-primary'
           }`}></span>
           <span className="text-[9px] font-medium text-text-muted uppercase tracking-wider">
             {state === 'speaking' ? 'AASRA Speaking' : 

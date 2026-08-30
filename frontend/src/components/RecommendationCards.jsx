@@ -8,19 +8,19 @@ export default function RecommendationCards({ recommendations, selectedLanguage 
   const getVerticalIcon = (vertical) => {
     switch (vertical) {
       case 'Emergency Police Intervention':
-        return <ShieldCheck className="w-6 h-6 text-red-400" />;
+        return <ShieldCheck className="w-6 h-6 text-risk-critical" />;
       case 'Psychological Counselling':
-        return <Heart className="w-6 h-6 text-pink-400" />;
+        return <Heart className="w-6 h-6 text-secondary" />;
       case 'Witness & Victim Protection':
-        return <PhoneCall className="w-6 h-6 text-amber-400" />;
+        return <PhoneCall className="w-6 h-6 text-primary-dark" />;
       case 'Free Legal Aid & Prosecution Support':
-        return <Scale className="w-6 h-6 text-cyan-400" />;
+        return <Scale className="w-6 h-6 text-secondary" />;
       case 'Medical Care & MLC Documentation':
-        return <Stethoscope className="w-6 h-6 text-emerald-400" />;
+        return <Stethoscope className="w-6 h-6 text-primary-dark" />;
       case 'Relief & Rehabilitation Fund':
-        return <Landmark className="w-6 h-6 text-purple-400" />;
+        return <Landmark className="w-6 h-6 text-secondary" />;
       default:
-        return <ShieldCheck className="w-6 h-6 text-cyan-400" />;
+        return <ShieldCheck className="w-6 h-6 text-primary-dark" />;
     }
   };
 
