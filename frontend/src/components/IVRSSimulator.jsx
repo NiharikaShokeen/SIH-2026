@@ -64,7 +64,7 @@ export default function IVRSSimulator({ onAssess, isAnalyzing, selectedLanguage 
       <div className="lg:col-span-6 bg-surface border border-border rounded-3xl p-6 glass-panel-luxury flex flex-col justify-between space-y-6 shadow-2xl">
         
         {/* Phone Display Header */}
-        <div className="bg-background border border-border rounded-2xl p-4 flex items-center justify-between shadow-inner">
+        <div className="bg-background border border-border rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-11 h-11 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary-dark">
               <Radio className="w-6 h-6 animate-pulse" />
@@ -142,7 +142,7 @@ export default function IVRSSimulator({ onAssess, isAnalyzing, selectedLanguage 
             </div>
           </div>
         ) : (
-          <div className="p-6 bg-background border border-border rounded-2xl text-center space-y-3">
+          <div className="space-y-4 bg-background border border-primary/30 p-5 rounded-2xl shadow-xl">
             <Volume2 className="w-8 h-8 text-primary/50 mx-auto" />
             <p className="text-xs text-text-muted leading-relaxed">
               Select a grievance scenario below and click <strong>"{t('start_ivrs_call', selectedLanguage)}"</strong> to hear native speech audio in {selectedLanguage.toUpperCase()}.
@@ -203,11 +203,11 @@ export default function IVRSSimulator({ onAssess, isAnalyzing, selectedLanguage 
           </p>
 
           <div className="space-y-2 pt-2">
-            <div className="flex items-center justify-between text-xs p-3 bg-background rounded-2xl border border-border">
+            <div className="flex items-center justify-between text-xs p-3 bg-background rounded-xl border border-border">
               <span className="text-text-muted">Audio Codec</span>
               <span className="text-primary-dark font-mono font-bold">G.711 Narrowband</span>
             </div>
-            <div className="flex items-center justify-between text-xs p-3 bg-background rounded-2xl border border-border">
+            <div className="flex items-center justify-between text-xs p-3 bg-background rounded-xl border border-border">
               <span className="text-text-muted">Extraction Latency</span>
               <span className="text-risk-low font-mono font-bold">&lt; 320 ms Real-Time</span>
             </div>
