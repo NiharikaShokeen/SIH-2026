@@ -10,7 +10,11 @@ from app.ml.recommendation_engine import recommendation_engine
 from app.ml.fairness_auditor import fairness_auditor
 from app.data.sample_cases import SAMPLE_CASES
 
+from app.ml.facial_processor import FacialProcessor
+from app.core.alert_service import trigger_human_alert
+
 router = APIRouter()
+
 
 # In-memory session case store for demo
 cases_db = list(SAMPLE_CASES)
@@ -171,3 +175,53 @@ def record_consent(req: ConsentRequest):
 @router.get("/fairness")
 def get_fairness_report():
     return fairness_auditor.get_bias_audit_report()
+
+facial_processor = FacialProcessor()
+
+
+@router.post("/facial-assessment")
+async def facial_assessment(
+    session_id: str = Form(...),
+    frame: UploadFile = File(...),
+):
+    """
+    Accepts a SINGLE snapshot frame (not a video stream) from the frontend's
+    periodic capture. Frame bytes are processed in-memory only — never
+    written to disk — consistent with the no-raw-media-retained design.
+    """
+    frame_bytes = await frame.read()
+    result = facial_processor.process_frame(frame_bytes)
+ 
+    response = {
+        "session_id": session_id,
+        "modality_available": result.modality_available,
+        "score": result.score,
+        "dominant_emotion": result.dominant_emotion,
+        "pain_proxy_flag": result.pain_proxy_flag,
+        "reasons": result.reasons,
+        "alert_triggered": False,
+    }
+ 
+    # Critical override: pain-adjacent expression escalates immediately,
+    # same pattern as the critical-text-phrase override in svi_engine.py.
+    # This still routes to a HUMAN for confirmation — it does not auto-
+    # dispatch police or take irreversible action on its own.
+    if result.pain_proxy_flag:
+        alert = trigger_human_alert(
+            session_id=session_id,
+            svi=result.score,
+            category="Critical",
+            reasons=result.reasons,
+            triggered_by="facial:pain_proxy",
+        )
+        response["alert_triggered"] = True
+        response["alert_id"] = alert.alert_id
+ 
+    return response
+ 
+ 
+@router.get("/alerts/active")
+async def get_active_alerts_endpoint():
+    """Feeds the 'Officer Control Room' tab in your frontend header."""
+    from app.core.alert_service import get_active_alerts
+    return [a.__dict__ for a in get_active_alerts()]
