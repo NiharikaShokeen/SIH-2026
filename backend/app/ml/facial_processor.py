@@ -56,11 +56,12 @@ class FacialProcessor:
         self._detector = FER(mtcnn=True) if FER_OK else None
         self._cascade = None
         if OPENCV_OK and not FER_OK:
-            self._cascade = cv2.CascadeClassifier(
-                cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-            )
-            if self._cascade.empty():
-                self._cascade = None
+            import os
+            cascade_path = os.path.join(cv2.data.haarcascades, "haarcascade_frontalface_default.xml")
+            if os.path.exists(cascade_path):
+                self._cascade = cv2.CascadeClassifier(cascade_path)
+                if self._cascade.empty():
+                    self._cascade = None
 
     def process_frame(self, image_bytes: bytes) -> FacialResult:
         if not OPENCV_OK:

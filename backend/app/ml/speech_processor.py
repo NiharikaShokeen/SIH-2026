@@ -34,6 +34,15 @@ class SpeechAnalyticsEngine:
 
     def __init__(self):
         self.sample_rate = 16000
+        self.default_prosody = {
+            "pitch_mean": 210.0,
+            "pitch_std": 35.0,
+            "jitter": 0.024,
+            "shimmer": 0.048,
+            "pause_ratio": 0.32,
+            "speaking_rate": 2.1,
+            "energy_variance": 0.01
+        }
 
     # ============================================================
     # MAIN ANALYSIS FUNCTION
@@ -332,8 +341,15 @@ class SpeechAnalyticsEngine:
             output_path = output_file.name
             output_file.close()
 
+            ffmpeg_cmd = "ffmpeg"
+            try:
+                import imageio_ffmpeg
+                ffmpeg_cmd = imageio_ffmpeg.get_ffmpeg_exe()
+            except Exception:
+                pass
+
             command = [
-                "ffmpeg",
+                ffmpeg_cmd,
                 "-y",
                 "-i",
                 input_path,
