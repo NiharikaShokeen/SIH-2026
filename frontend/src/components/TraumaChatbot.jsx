@@ -101,7 +101,7 @@ export default function TraumaChatbot({
         {/* Chat Header Banner */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-slate-950 border border-teal-500/40 rounded-2xl">
+            <div className="p-2 bg-primary/10 border border-primary/30 rounded-2xl">
               <AasraCompanion 
                 state={
                   isAnalyzing ? 'thinking' : 
@@ -181,23 +181,23 @@ export default function TraumaChatbot({
           {/* AASRA Calm Trauma-Informed Response after Assessment */}
           {assessmentResult && (
             <div className="flex items-start space-x-3 animate-fade-in">
-              <div className="w-9 h-9 rounded-2xl bg-teal-950 border border-teal-500/40 flex items-center justify-center text-teal-300 text-xs font-bold shadow-md flex-shrink-0">
+              <div className="w-9 h-9 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary-dark text-xs font-bold shadow-md flex-shrink-0">
                 AA
               </div>
-              <div className="bg-slate-950 border border-teal-800/80 p-4 rounded-2xl max-w-md text-xs text-slate-200 leading-relaxed space-y-2 shadow-lg">
-                <p className="font-semibold text-teal-300 flex items-center space-x-1.5">
-                  <HeartHandshake className="w-4 h-4 text-teal-400" />
+              <div className="bg-background border border-border p-4 rounded-2xl max-w-md text-xs text-text leading-relaxed space-y-2 shadow-lg">
+                <p className="font-semibold text-primary-dark flex items-center space-x-1.5">
+                  <HeartHandshake className="w-4 h-4 text-primary" />
                   <span>AASRA Companion Response:</span>
                 </p>
-                <p className="text-slate-100 font-medium text-xs leading-relaxed">
+                <p className="text-text font-medium text-xs leading-relaxed">
                   "Thank you for telling me. Your safety matters. You don't have to go through this alone. Let's look at what support may be helpful right now."
                 </p>
-                <div className="pt-2 border-t border-slate-800/80 text-[11px] text-teal-300 font-sans flex items-center justify-between">
+                <div className="pt-2 border-t border-border text-[11px] text-primary-dark font-sans flex items-center justify-between">
                   <span className="flex items-center space-x-1">
-                    <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                    <Shield className="w-3.5 h-3.5 text-risk-low" />
                     <span>Support Plan Activated</span>
                   </span>
-                  <span className="text-[10px] text-slate-400 font-mono">Case Confidential</span>
+                  <span className="text-[10px] text-text-muted font-mono">Case Confidential</span>
                 </div>
               </div>
             </div>
@@ -209,7 +209,7 @@ export default function TraumaChatbot({
               <div className="flex items-center space-x-3">
                 <Volume2 className="w-5 h-5 text-primary animate-bounce" />
                 <div>
-                  <span className="text-xs font-semibold text-white block">Listening & Capturing Voice Biomarkers...</span>
+                  <span className="text-xs font-semibold text-text block">Listening & Capturing Voice Biomarkers...</span>
                   <span className="text-[10px] text-primary-dark font-mono">F0 Pitch • Jitter • Shimmer • Pauses</span>
                 </div>
               </div>
@@ -234,8 +234,8 @@ export default function TraumaChatbot({
         </div>
 
         {/* Grievance Scenarios & Demo Trigger */}
-        <div className="space-y-2 pt-2 border-t border-slate-800/80">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="space-y-2 pt-2 border-t border-border">
+          <div className="flex items-center justify-between text-xs text-text-muted">
             <span className="font-semibold">{t('scenarios_title', selectedLanguage)}</span>
             <span className="text-secondary font-bold text-[11px]">{t('scenarios_click', selectedLanguage)}</span>
           </div>
@@ -264,18 +264,18 @@ export default function TraumaChatbot({
                 }}
                 className={`text-left p-3 rounded-2xl transition-all group shadow-sm border ${
                   scenario.is_critical_preset
-                    ? 'bg-teal-950/40 hover:bg-teal-900/60 border-teal-700/80 hover:border-teal-500'
-                    : 'bg-slate-950 hover:bg-slate-800/80 border-slate-800 hover:border-teal-500/40'
+                    ? 'bg-risk-critical-bg hover:bg-risk-critical-bg/80 border-risk-critical/40 hover:border-risk-critical'
+                    : 'bg-background hover:bg-surface border-border hover:border-primary/40'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-200 group-hover:text-teal-300">
+                  <span className="text-xs font-semibold text-text group-hover:text-primary-dark">
                     {scenario.name}
                   </span>
                   <span className={`text-[9px] font-medium px-2 py-0.5 rounded border ${
                     scenario.is_critical_preset
-                      ? 'bg-teal-950 text-teal-300 border-teal-700'
-                      : 'bg-slate-900 text-slate-400 border-slate-700'
+                      ? 'bg-risk-critical-bg text-risk-critical border-risk-critical/40'
+                      : 'bg-surface text-text-muted border-border'
                   }`}>
                     {scenario.category}
                   </span>
