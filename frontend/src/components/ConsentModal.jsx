@@ -5,61 +5,61 @@ export default function ConsentModal({ isOpen, onClose, onAcceptConsent, consent
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-6 relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-text/70 backdrop-blur-md animate-fade-in">
+      <div className="bg-surface border border-border rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-6 relative overflow-hidden">
         
         {/* Glowing Top Decorator */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500"></div>
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-primary-dark to-secondary"></div>
 
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-3 bg-cyan-950/80 border border-cyan-700/60 rounded-xl text-cyan-400">
+            <div className="p-3 bg-primary/10 border border-primary/30 rounded-xl text-primary-dark">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">Informed Consent & Privacy Charter</h2>
-              <p className="text-xs text-slate-400">National Helpline Against Atrocities (14566) • MoSJE</p>
+              <h2 className="text-xl font-bold text-text">Informed Consent & Privacy Charter</h2>
+              <p className="text-xs text-text-muted">National Helpline Against Atrocities (14566) • MoSJE</p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
+            className="text-text-muted hover:text-text p-1 rounded-lg hover:bg-background"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Consent Statements */}
-        <div className="space-y-3 text-sm text-slate-300 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+        <div className="space-y-3 text-sm text-text bg-background p-4 rounded-xl border border-border">
           <div className="flex items-start space-x-3">
-            <Lock className="w-4 h-4 text-cyan-400 mt-1 flex-shrink-0" />
+            <Lock className="w-4 h-4 text-primary-dark mt-1 flex-shrink-0" />
             <p>
-              <strong className="text-white">Encrypted & Confidential Intake:</strong> Your voice biomarkers and text narrative are encrypted using AES-256 standards. Audio streams are discarded post-feature extraction unless explicit ongoing consent is retained.
+              <strong className="text-text">Encrypted & Confidential Intake:</strong> Your voice biomarkers and text narrative are encrypted using AES-256 standards. Audio streams are discarded post-feature extraction unless explicit ongoing consent is retained.
             </p>
           </div>
           <div className="flex items-start space-x-3">
-            <Eye className="w-4 h-4 text-cyan-400 mt-1 flex-shrink-0" />
+            <Eye className="w-4 h-4 text-primary-dark mt-1 flex-shrink-0" />
             <p>
-              <strong className="text-white">AI Stress Assessment Purpose:</strong> The AI engine computes a Stress Vulnerability Index (SVI) purely to prioritize counsellor dispatch, legal aid, medical care, and witness protection.
+              <strong className="text-text">AI Stress Assessment Purpose:</strong> The AI engine computes a Stress Vulnerability Index (SVI) purely to prioritize counsellor dispatch, legal aid, medical care, and witness protection.
             </p>
           </div>
           <div className="flex items-start space-x-3">
-            <AlertTriangle className="w-4 h-4 text-cyan-400 mt-1 flex-shrink-0" />
+            <AlertTriangle className="w-4 h-4 text-primary-dark mt-1 flex-shrink-0" />
             <p>
-              <strong className="text-white">Right to Opt-Out Anytime:</strong> You may pause audio recording, request human-only intake without AI analysis, or request total deletion of session logs at any stage.
+              <strong className="text-text">Right to Opt-Out Anytime:</strong> You may pause audio recording, request human-only intake without AI analysis, or request total deletion of session logs at any stage.
             </p>
           </div>
         </div>
 
         {/* Scope Checkboxes */}
-        <div className="space-y-2 text-xs text-slate-300">
+        <div className="space-y-2 text-xs text-text">
           <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" defaultChecked disabled className="rounded border-slate-700 text-cyan-500 focus:ring-cyan-500" />
+            <input type="checkbox" defaultChecked disabled className="rounded border-border text-primary focus:ring-primary" />
             <span>Consent to process speech prosody (pitch & micro-tremor stress indicators)</span>
           </label>
           <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" defaultChecked disabled className="rounded border-slate-700 text-cyan-500 focus:ring-cyan-500" />
+            <input type="checkbox" defaultChecked disabled className="rounded border-border text-primary focus:ring-primary" />
             <span>Consent to share automated recommendations with authorized DLSA / Police Counsellors</span>
           </label>
         </div>
@@ -68,7 +68,7 @@ export default function ConsentModal({ isOpen, onClose, onAcceptConsent, consent
         <div className="flex items-center justify-end space-x-3 pt-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800"
+            className="px-4 py-2 rounded-xl text-sm font-medium text-text-muted hover:text-text hover:bg-background"
           >
             Review Later
           </button>
@@ -77,7 +77,7 @@ export default function ConsentModal({ isOpen, onClose, onAcceptConsent, consent
               onAcceptConsent();
               onClose();
             }}
-            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-500/25 transition-all"
+            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-primary hover:bg-primary-dark shadow-lg shadow-primary/25 transition-all"
           >
             <Check className="w-4 h-4" />
             <span>Accept & Record Consent</span>
