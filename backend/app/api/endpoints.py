@@ -40,6 +40,18 @@ class ConsentRequest(BaseModel):
     channel: str
     consent_scope: List[str]
 
+class ConversationRequest(BaseModel):
+    message: str
+    language_code: Optional[str] = "auto"
+    conversation_state: Optional[Dict[str, Any]] = None
+
+class ConversationAnswerRequest(BaseModel):
+    question_id: str
+    answer: Any
+    message: Optional[str] = None
+    language_code: Optional[str] = "auto"
+    conversation_state: Optional[Dict[str, Any]] = None
+
 @router.get("/health")
 def health_check():
     return {"status": "online", "system": "NHAA 14566 AI Stress & Trauma Assessment Engine", "timestamp": time.time()}

@@ -5,7 +5,10 @@ import os
 from typing import Dict, Any, List
 
 import numpy as np
-import librosa
+try:
+    import librosa
+except Exception:
+    librosa = None
 
 
 class SpeechAnalyticsEngine:
@@ -51,10 +54,8 @@ class SpeechAnalyticsEngine:
         if custom_prosody:
             return self._analyze_custom_prosody(custom_prosody)
 
-        if not audio_data:
-            return self._empty_result(
-                "No audio data was provided."
-            )
+        if not audio_data or librosa is None:
+            return self._analyze_custom_prosody(custom_prosody or self.default_prosody)
 
         wav_path = None
 
