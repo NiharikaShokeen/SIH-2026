@@ -67,17 +67,17 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 glass-panel-luxury space-y-5 shadow-2xl">
+    <div className="bg-surface border border-border rounded-3xl p-5 space-y-5 shadow-sm">
       
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 bg-gradient-to-tr from-cyan-950 to-blue-950 border border-cyan-700/60 rounded-2xl text-cyan-400">
+          <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-2xl text-primary font-bold">
             <Sliders className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-white">Interactive Voice Modulation & Acoustic Biomarkers</h3>
-            <p className="text-[11px] text-slate-400">Test vocal tremor modulation, pitch instability & telephonic POTS filter</p>
+            <h3 className="text-sm font-extrabold text-primary-dark">Interactive Voice Modulation & Acoustic Biomarkers</h3>
+            <p className="text-[11px] text-text-muted font-sans">Test vocal tremor modulation, pitch instability & telephonic POTS filter</p>
           </div>
         </div>
 
@@ -89,12 +89,12 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
             onClick={playVoicePrompt}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border flex items-center space-x-1.5 ${
               isSpeakingPrompt
-                ? 'bg-indigo-600 text-white border-indigo-500 animate-pulse'
-                : 'bg-slate-950 hover:bg-slate-800 border-slate-800 text-slate-300'
+                ? 'bg-secondary text-white border-secondary animate-pulse'
+                : 'bg-background hover:bg-surface border-border text-text'
             }`}
             title="Synthesize AI Helpline Assistant Voice Prompt"
           >
-            <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
+            <Volume2 className="w-3.5 h-3.5 text-primary" />
             <span>{isSpeakingPrompt ? 'Speaking...' : 'Play Voice Prompt'}</span>
           </button>
 
@@ -103,8 +103,8 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
             onClick={toggleAudioPreview}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border flex items-center space-x-1.5 ${
               isPlayingAudio
-                ? 'bg-rose-600 text-white border-rose-500 shadow-lg shadow-rose-500/30 animate-pulse'
-                : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white border-cyan-500/80 shadow-md shadow-cyan-500/20'
+                ? 'bg-risk-critical-bg text-risk-critical border-risk-critical/40 animate-pulse font-bold'
+                : 'bg-primary hover:bg-primary-dark text-white border-primary shadow-sm'
             }`}
           >
             {isPlayingAudio ? <Square className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
@@ -118,10 +118,10 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         
         {/* Slider 1: Pitch F0 */}
-        <div className="space-y-2 bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800/80">
-          <div className="flex justify-between text-xs font-semibold text-slate-300">
+        <div className="space-y-2 bg-background p-3.5 rounded-2xl border border-border">
+          <div className="flex justify-between text-xs font-semibold text-text font-sans">
             <span>F0 Pitch Frequency</span>
-            <span className="font-mono text-cyan-400 font-bold">{pitchHz} Hz</span>
+            <span className="font-mono text-primary font-bold">{pitchHz} Hz</span>
           </div>
           <input
             type="range"
@@ -129,19 +129,19 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
             max="290"
             value={pitchHz}
             onChange={(e) => handleSliderChange(Number(e.target.value), tremorLevel, pauseRatio, usePhoneFilter)}
-            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+            className="w-full h-1.5 bg-border rounded-lg appearance-none cursor-pointer accent-primary"
           />
-          <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+          <div className="flex justify-between text-[10px] text-text-muted font-mono">
             <span>170 Hz (Normal)</span>
             <span>290 Hz (Panic)</span>
           </div>
         </div>
 
         {/* Slider 2: Micro-Tremor Level */}
-        <div className="space-y-2 bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800/80">
-          <div className="flex justify-between text-xs font-semibold text-slate-300">
+        <div className="space-y-2 bg-background p-3.5 rounded-2xl border border-border">
+          <div className="flex justify-between text-xs font-semibold text-text font-sans">
             <span>Vocal Tremor & Jitter</span>
-            <span className="font-mono text-amber-400 font-bold">{tremorLevel}%</span>
+            <span className="font-mono text-risk-moderate font-bold">{tremorLevel}%</span>
           </div>
           <input
             type="range"
@@ -149,19 +149,19 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
             max="100"
             value={tremorLevel}
             onChange={(e) => handleSliderChange(pitchHz, Number(e.target.value), pauseRatio, usePhoneFilter)}
-            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400"
+            className="w-full h-1.5 bg-border rounded-lg appearance-none cursor-pointer accent-risk-moderate"
           />
-          <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+          <div className="flex justify-between text-[10px] text-text-muted font-mono">
             <span>0% (Steady)</span>
             <span>100% (High Tremor)</span>
           </div>
         </div>
 
         {/* Slider 3: Hesitation Pause Ratio */}
-        <div className="space-y-2 bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800/80">
-          <div className="flex justify-between text-xs font-semibold text-slate-300">
+        <div className="space-y-2 bg-background p-3.5 rounded-2xl border border-border">
+          <div className="flex justify-between text-xs font-semibold text-text font-sans">
             <span>Hesitation Pause Ratio</span>
-            <span className="font-mono text-rose-400 font-bold">{pauseRatio}%</span>
+            <span className="font-mono text-risk-critical font-bold">{pauseRatio}%</span>
           </div>
           <input
             type="range"
@@ -169,9 +169,9 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
             max="60"
             value={pauseRatio}
             onChange={(e) => handleSliderChange(pitchHz, tremorLevel, Number(e.target.value), usePhoneFilter)}
-            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-400"
+            className="w-full h-1.5 bg-border rounded-lg appearance-none cursor-pointer accent-risk-critical"
           />
-          <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+          <div className="flex justify-between text-[10px] text-text-muted font-mono">
             <span>10% (Fluent)</span>
             <span>60% (Traumatic Pauses)</span>
           </div>
@@ -180,29 +180,29 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
       </div>
 
       {/* Bottom Meter & Filter Toggle */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border">
         
         {/* POTS Telephonic Filter Checkbox */}
-        <label className="flex items-center space-x-2 text-xs font-semibold text-slate-300 cursor-pointer bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+        <label className="flex items-center space-x-2 text-xs font-semibold text-text cursor-pointer bg-background px-3 py-1.5 rounded-xl border border-border">
           <input
             type="checkbox"
             checked={usePhoneFilter}
             onChange={(e) => handleSliderChange(pitchHz, tremorLevel, pauseRatio, e.target.checked)}
-            className="rounded border-slate-700 text-cyan-500 focus:ring-cyan-500"
+            className="rounded border-border text-primary focus:ring-primary"
           />
-          <Radio className="w-3.5 h-3.5 text-cyan-400" />
+          <Radio className="w-3.5 h-3.5 text-primary" />
           <span>Apply Telephonic POTS G.711 Narrowband Filter (300Hz-3.4kHz)</span>
         </label>
 
         {/* Dynamic Acoustic Stress Result */}
         <div className="flex items-center space-x-2">
-          <span className="text-xs text-slate-400 font-semibold">Estimated Acoustic Stress:</span>
+          <span className="text-xs text-text-muted font-semibold font-sans">Estimated Acoustic Stress:</span>
           <span className={`text-base font-mono font-black px-3 py-0.5 rounded-xl border ${
             estimatedAcousticStress > 70
-              ? 'bg-red-950 text-red-400 border-red-800'
+              ? 'bg-risk-critical-bg text-risk-critical border-risk-critical/40'
               : estimatedAcousticStress > 45
-              ? 'bg-amber-950 text-amber-400 border-amber-800'
-              : 'bg-emerald-950 text-emerald-400 border-emerald-800'
+              ? 'bg-risk-moderate-bg text-risk-moderate border-risk-moderate/40'
+              : 'bg-risk-low-bg text-risk-low border-risk-low/40'
           }`}>
             {estimatedAcousticStress} / 100
           </span>
@@ -210,6 +210,8 @@ export default function VoiceModulatorPanel({ onProsodyChange, selectedLanguage 
 
       </div>
 
+
     </div>
   );
 }
+

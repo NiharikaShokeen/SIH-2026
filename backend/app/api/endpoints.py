@@ -11,7 +11,11 @@ from app.ml.recommendation_engine import recommendation_engine
 from app.ml.fairness_auditor import fairness_auditor
 from app.data.sample_cases import SAMPLE_CASES
 
+from app.ml.facial_processor import FacialProcessor
+from app.core.alert_service import trigger_human_alert
+
 router = APIRouter()
+
 
 # In-memory session case store for demo
 cases_db = list(SAMPLE_CASES)
@@ -51,8 +55,51 @@ def analyze_text(req: TextAnalysisRequest):
     return nlp_engine.analyze_narrative(req.text, req.language_code)
 
 @router.post("/analyze/speech")
-def analyze_speech(custom_prosody: Optional[Dict[str, float]] = None):
-    return speech_engine.analyze_audio_features(custom_prosody=custom_prosody)
+async def analyze_speech(file: UploadFile = File(...)):
+    """
+    Receive recorded audio from the React frontend
+    and pass it to the speech analytics engine.
+    """
+
+    print("\n========== SPEECH UPLOAD ==========")
+    print("Filename:", file.filename)
+    print("Content type:", file.content_type)
+
+    if not file.content_type or not file.content_type.startswith("audio/"):
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded file must be an audio file."
+        )
+
+    # Read uploaded audio
+    audio_data = await file.read()
+
+    print("Audio received!")
+    print("Audio size:", len(audio_data), "bytes")
+
+    if not audio_data:
+        raise HTTPException(
+            status_code=400,
+            detail="Audio file is empty."
+        )
+
+    # Send audio to speech engine
+    speech_result = speech_engine.analyze_audio_features(
+        audio_data=audio_data
+    )
+
+    print("Speech analysis completed.")
+    print("Acoustic stress:", speech_result["acoustic_stress_score"])
+    print("===================================\n")
+
+    # Add audio information to response
+    speech_result["audio_info"] = {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "size_bytes": len(audio_data)
+    }
+
+    return speech_result
 
 @router.post("/conversation/next-question")
 def get_next_conversation_question(req: ConversationRequest):
@@ -199,15 +246,52 @@ def record_consent(req: ConsentRequest):
 def get_fairness_report():
     return fairness_auditor.get_bias_audit_report()
 
-class ConversationRequest(BaseModel):
-    message: str
-    language_code: Optional[str] = "auto"
-    conversation_state: Optional[Dict[str, Any]] = None
+facial_processor = FacialProcessor()
 
 
-class ConversationAnswerRequest(BaseModel):
-    conversation_state: Optional[Dict[str, Any]] = None
-    question_id: str
-    answer: Any
-    message: Optional[str] = ""
-    language_code: Optional[str] = "auto"
+@router.post("/facial-assessment")
+async def facial_assessment(
+    session_id: str = Form(...),
+    frame: UploadFile = File(...),
+):
+    """
+    Accepts a SINGLE snapshot frame (not a video stream) from the frontend's
+    periodic capture. Frame bytes are processed in-memory only — never
+    written to disk — consistent with the no-raw-media-retained design.
+    """
+    frame_bytes = await frame.read()
+    result = facial_processor.process_frame(frame_bytes)
+ 
+    response = {
+        "session_id": session_id,
+        "modality_available": result.modality_available,
+        "score": result.score,
+        "dominant_emotion": result.dominant_emotion,
+        "pain_proxy_flag": result.pain_proxy_flag,
+        "reasons": result.reasons,
+        "alert_triggered": False,
+    }
+ 
+    # Critical override: pain-adjacent expression escalates immediately,
+    # same pattern as the critical-text-phrase override in svi_engine.py.
+    # This still routes to a HUMAN for confirmation — it does not auto-
+    # dispatch police or take irreversible action on its own.
+    if result.pain_proxy_flag:
+        alert = trigger_human_alert(
+            session_id=session_id,
+            svi=result.score,
+            category="Critical",
+            reasons=result.reasons,
+            triggered_by="facial:pain_proxy",
+        )
+        response["alert_triggered"] = True
+        response["alert_id"] = alert.alert_id
+ 
+    return response
+ 
+ 
+@router.get("/alerts/active")
+async def get_active_alerts_endpoint():
+    """Feeds the 'Officer Control Room' tab in your frontend header."""
+    from app.core.alert_service import get_active_alerts
+    return [a.__dict__ for a in get_active_alerts()]

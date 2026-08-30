@@ -107,7 +107,12 @@ SVI Range → Risk Level:
 
 - **Python 3.11+** (developed on Python 3.11.9 — recommended version)
 - **Node.js 20+** and **npm 10+** (developed on Node.js v24.15.0 / npm 11.12.1)
+- Easiest way to install Python 3.11 on Windows (You need Python 3.11 for fer used for facial emotion analysis to run) 
 
+Skip the browser download — if you're on Windows 10/11, winget is already built in:
+```powershell
+winget install Python.Python.3.11
+```
 ---
 
 ### 1. Backend — FastAPI Server
