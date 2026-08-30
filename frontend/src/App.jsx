@@ -8,7 +8,10 @@ import CounsellorDashboard from './components/CounsellorDashboard';
 import FairnessAudit from './components/FairnessAudit';
 import VoiceModulatorPanel from './components/VoiceModulatorPanel';
 import { SAMPLE_PRESETS } from './utils/samplePresets';
+
 import { Cloud, AlertTriangle, ShieldAlert, X } from 'lucide-react';
+import VoiceRecorder from './components/VoiceRecorder';
+
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('intake'); // 'intake' | 'counsellor' | 'fairness'
@@ -161,6 +164,9 @@ export default function App() {
               isAnalyzing={isAnalyzing}
               selectedLanguage={selectedLanguage}
             />
+
+            <VoiceRecorder />
+            
 
             {assessmentResult && (
               <div className="space-y-8 border-t border-border pt-8">

@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 import time
 
+from app.ml.conversation_engine import conversation_engine
 from app.ml.speech_processor import speech_engine
 from app.ml.nlp_processor import nlp_engine
 from app.ml.svi_engine import svi_engine
@@ -54,8 +55,120 @@ def analyze_text(req: TextAnalysisRequest):
     return nlp_engine.analyze_narrative(req.text, req.language_code)
 
 @router.post("/analyze/speech")
-def analyze_speech(custom_prosody: Optional[Dict[str, float]] = None):
-    return speech_engine.analyze_audio_features(custom_prosody=custom_prosody)
+async def analyze_speech(file: UploadFile = File(...)):
+    """
+    Receive recorded audio from the React frontend
+    and pass it to the speech analytics engine.
+    """
+
+    print("\n========== SPEECH UPLOAD ==========")
+    print("Filename:", file.filename)
+    print("Content type:", file.content_type)
+
+    if not file.content_type or not file.content_type.startswith("audio/"):
+        raise HTTPException(
+            status_code=400,
+            detail="Uploaded file must be an audio file."
+        )
+
+    # Read uploaded audio
+    audio_data = await file.read()
+
+    print("Audio received!")
+    print("Audio size:", len(audio_data), "bytes")
+
+    if not audio_data:
+        raise HTTPException(
+            status_code=400,
+            detail="Audio file is empty."
+        )
+
+    # Send audio to speech engine
+    speech_result = speech_engine.analyze_audio_features(
+        audio_data=audio_data
+    )
+
+    print("Speech analysis completed.")
+    print("Acoustic stress:", speech_result["acoustic_stress_score"])
+    print("===================================\n")
+
+    # Add audio information to response
+    speech_result["audio_info"] = {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "size_bytes": len(audio_data)
+    }
+
+    return speech_result
+
+@router.post("/conversation/next-question")
+def get_next_conversation_question(req: ConversationRequest):
+    if not req.message.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Message cannot be empty"
+        )
+
+    # Analyze the user's message using the existing NLP engine
+    nlp_result = nlp_engine.analyze_narrative(
+        req.message,
+        req.language_code
+    )
+
+    # Get the current conversation state
+    state = req.conversation_state or {}
+
+    # Ask the conversation engine what should happen next
+    result = conversation_engine.get_next_question(
+        nlp_result,
+        state
+    )
+
+    return {
+        "nlp_analysis": nlp_result,
+        "conversation": result
+    }
+@router.post("/conversation/answer")
+def submit_conversation_answer(req: ConversationAnswerRequest):
+
+    # 1. Get the existing conversation state
+    state = req.conversation_state or {}
+
+    # 2. Save the user's answer
+    updated_state = conversation_engine.update_state(
+        state,
+        req.question_id,
+        req.answer
+    )
+
+    # 3. Analyze any additional message/narrative
+    #    if the user provided one.
+    nlp_result = {
+        "detected_categories": [],
+        "entities": {
+            "has_suicidal_flag": False
+        }
+    }
+
+    if req.message and req.message.strip():
+
+        nlp_result = nlp_engine.analyze_narrative(
+            req.message,
+            req.language_code
+        )
+
+    # 4. Ask the conversation engine what should happen next
+    conversation_result = conversation_engine.get_next_question(
+        nlp_result,
+        updated_state
+    )
+
+    # 5. Return the updated state + next question
+    return {
+        "conversation": conversation_result,
+        "conversation_state": updated_state,
+        "nlp_analysis": nlp_result
+    }
 
 @router.post("/assess")
 def full_trauma_assessment(req: FullAssessmentRequest):
