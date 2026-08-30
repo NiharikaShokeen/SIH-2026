@@ -191,15 +191,15 @@ function VoiceRecorder() {
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/20 mb-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 mb-4">
           <span className="text-3xl">🎙️</span>
         </div>
 
-        <h2 className="text-3xl font-bold text-white mb-2">
+        <h2 className="text-3xl font-bold text-text mb-2">
           Voice Analysis
         </h2>
 
-        <p className="text-slate-400 max-w-xl mx-auto">
+        <p className="text-text-muted max-w-xl mx-auto">
           Record your voice and let our system analyze acoustic speech
           characteristics.
         </p>
@@ -210,7 +210,7 @@ function VoiceRecorder() {
         {/* Status */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-sm text-slate-400 mb-1">
+            <p className="text-sm text-text-muted mb-1">
               Recording status
             </p>
 
@@ -219,11 +219,11 @@ function VoiceRecorder() {
                 className={`w-2.5 h-2.5 rounded-full ${
                   isRecording
                     ? "bg-red-500 animate-pulse"
-                    : "bg-cyan-400"
+                    : "bg-primary"
                 }`}
               />
 
-              <span className="text-white font-medium">
+              <span className="text-text font-medium">
                 {isRecording ? "Recording..." : "Ready to record"}
               </span>
             </div>
@@ -231,7 +231,7 @@ function VoiceRecorder() {
 
           <div
             className={`text-2xl font-mono font-semibold ${
-              isRecording ? "text-red-400" : "text-slate-300"
+              isRecording ? "text-risk-critical" : "text-text"
             }`}
           >
             {formatTime(duration)}
@@ -239,13 +239,13 @@ function VoiceRecorder() {
         </div>
 
         {/* Waveform */}
-        <div className="h-32 rounded-2xl bg-slate-950/70 border border-white/5 flex items-center justify-center overflow-hidden mb-8">
+        <div className="h-32 rounded-2xl bg-background border border-border flex items-center justify-center overflow-hidden mb-8">
           {isRecording ? (
             <div className="flex items-center justify-center gap-1 h-20 w-full px-6">
               {Array.from({ length: 45 }).map((_, index) => (
                 <span
                   key={index}
-                  className="w-1 rounded-full bg-cyan-400 animate-wave-bar"
+                  className="w-1 rounded-full bg-primary animate-wave-bar"
                   style={{
                     animationDelay: `${index * 0.04}s`,
                     height: `${20 + ((index * 17) % 45)}px`,
@@ -254,13 +254,13 @@ function VoiceRecorder() {
               ))}
             </div>
           ) : (
-            <div className="flex items-center gap-1 opacity-30">
+            <div className="flex items-center gap-1 opacity-50">
               {Array.from({ length: 45 }).map((_, index) => (
                 <span
                   key={index}
-                  className="w-1 rounded-full bg-slate-400"
+                  className="w-1 rounded-full bg-primary"
                   style={{
-                    height: `${8 + ((index * 11) % 18)}px`,
+                    height: `${16 + ((index * 13) % 32)}px`,
                   }}
                 />
               ))}
@@ -275,9 +275,9 @@ function VoiceRecorder() {
               type="button"
               onClick={startRecording}
               disabled={isAnalyzing}
-              className="group flex items-center gap-3 px-7 py-4 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold transition-all duration-300 shadow-lg shadow-cyan-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group flex items-center gap-3 px-7 py-4 rounded-2xl bg-primary hover:bg-primary-dark text-white font-semibold transition-all duration-300 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-950/10">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
                 🎙️
               </span>
 
@@ -302,7 +302,7 @@ function VoiceRecorder() {
 
         {/* Recording Hint */}
         {!isRecording && !audioURL && !isAnalyzing && (
-          <p className="text-center text-sm text-slate-500 mt-5">
+          <p className="text-center text-sm text-text-muted mt-5">
             Speak naturally for a few seconds for better analysis.
           </p>
         )}
@@ -313,11 +313,11 @@ function VoiceRecorder() {
         <div className="glass-card-hover rounded-3xl p-6 mt-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-xs uppercase tracking-wider text-cyan-400 font-semibold">
+              <p className="text-xs uppercase tracking-wider text-primary font-semibold">
                 Audio Preview
               </p>
 
-              <h3 className="text-xl font-semibold text-white mt-1">
+              <h3 className="text-xl font-semibold text-text mt-1">
                 Your Recording
               </h3>
             </div>
@@ -339,14 +339,14 @@ function VoiceRecorder() {
       {isAnalyzing && (
         <div className="glass-card-hover rounded-3xl p-6 mt-6">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-11 h-11 rounded-full border-2 border-cyan-400/20 border-t-cyan-400 animate-spin" />
+            <div className="w-11 h-11 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
 
             <div>
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-text">
                 Analyzing your speech
               </h3>
 
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-text-muted">
                 Processing your recording...
               </p>
             </div>
@@ -355,7 +355,7 @@ function VoiceRecorder() {
           <div className="space-y-3">
             <div className="flex items-center gap-3 text-sm">
               <span className="text-emerald-400">✓</span>
-              <span className="text-slate-300">
+              <span className="text-text">
                 Audio received
               </span>
             </div>
@@ -368,8 +368,8 @@ function VoiceRecorder() {
             </div>
 
             <div className="flex items-center gap-3 text-sm">
-              <span className="w-4 h-4 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin" />
-              <span className="text-slate-300">
+              <span className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+              <span className="text-text">
                 Evaluating vocal patterns
               </span>
             </div>
@@ -379,16 +379,16 @@ function VoiceRecorder() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 p-5 rounded-2xl bg-red-500/10 border border-red-500/20">
+        <div className="mt-6 p-5 rounded-2xl bg-risk-critical-bg border border-risk-critical/30">
           <div className="flex items-start gap-3">
             <span className="text-xl">⚠️</span>
 
             <div>
-              <h3 className="font-semibold text-red-300 mb-1">
+              <h3 className="font-semibold text-risk-critical mb-1">
                 Analysis failed
               </h3>
 
-              <p className="text-sm text-red-200/70">
+              <p className="text-sm text-text-muted">
                 {error}
               </p>
             </div>
@@ -400,15 +400,15 @@ function VoiceRecorder() {
       {result && !isAnalyzing && (
         <div className="mt-8">
           <div className="mb-5">
-            <p className="text-xs uppercase tracking-wider text-cyan-400 font-semibold">
+            <p className="text-xs uppercase tracking-wider text-primary font-semibold">
               Analysis Complete
             </p>
 
-            <h3 className="text-2xl font-bold text-white mt-1">
+            <h3 className="text-2xl font-bold text-text mt-1">
               Speech Analysis
             </h3>
 
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-text-muted mt-1">
               Acoustic characteristics detected from your recording.
             </p>
           </div>
@@ -417,33 +417,33 @@ function VoiceRecorder() {
           <div className="glass-panel-luxury rounded-3xl p-6 md:p-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* Stress */}
-              <div className="md:col-span-1 rounded-2xl bg-slate-950/50 border border-white/5 p-6 text-center">
-                <p className="text-sm text-slate-400 mb-3">
+              <div className="md:col-span-1 rounded-2xl bg-surface border border-border p-6 text-center">
+                <p className="text-sm text-text-muted mb-3">
                   Acoustic Stress
                 </p>
 
-                <div className="text-5xl font-bold text-white mb-2">
+                <div className="text-5xl font-bold text-text mb-2">
                   {stressScore ?? "—"}
                 </div>
 
-                <div className="inline-flex px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-sm font-medium">
+                <div className="inline-flex px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
                   {stressLabel}
                 </div>
               </div>
 
               {/* Confidence */}
-              <div className="rounded-2xl bg-slate-950/50 border border-white/5 p-6">
-                <p className="text-sm text-slate-400 mb-3">
+              <div className="rounded-2xl bg-surface border border-border p-6">
+                <p className="text-sm text-text-muted mb-3">
                   Confidence
                 </p>
 
-                <div className="text-3xl font-bold text-white mb-4">
+                <div className="text-3xl font-bold text-text mb-4">
                   {result.confidence ?? "—"}
                 </div>
 
-                <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-border overflow-hidden">
                   <div
-                    className="h-full bg-cyan-400 rounded-full"
+                    className="h-full bg-primary rounded-full"
                     style={{
                       width: `${Math.min(
                         100,
@@ -455,34 +455,34 @@ function VoiceRecorder() {
               </div>
 
               {/* Uncertainty */}
-              <div className="rounded-2xl bg-slate-950/50 border border-white/5 p-6">
-                <p className="text-sm text-slate-400 mb-3">
+              <div className="rounded-2xl bg-surface border border-border p-6">
+                <p className="text-sm text-text-muted mb-3">
                   Uncertainty
                 </p>
 
-                <div className="text-3xl font-bold text-white mb-2">
+                <div className="text-3xl font-bold text-text mb-2">
                   {result.uncertainty ?? "—"}
                 </div>
 
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-text-muted">
                   Model uncertainty level
                 </p>
               </div>
             </div>
 
             {/* Interpretation */}
-            <div className="mt-6 p-5 rounded-2xl bg-cyan-400/5 border border-cyan-400/10">
+            <div className="mt-6 p-5 rounded-2xl bg-primary/5 border border-primary/10">
               <div className="flex items-start gap-3">
                 <span className="text-xl">💡</span>
 
                 <div>
-                  <h4 className="font-semibold text-white mb-1">
+                  <h4 className="font-semibold text-text mb-1">
                     What this means
                   </h4>
 
-                  <p className="text-sm leading-relaxed text-slate-400">
+                  <p className="text-sm leading-relaxed text-text-muted">
                     Your recording shows{" "}
-                    <span className="text-cyan-300 font-medium">
+                    <span className="text-primary font-medium">
                       {stressLabel.toLowerCase()}
                     </span>{" "}
                     acoustic stress characteristics based on the detected
@@ -493,7 +493,7 @@ function VoiceRecorder() {
             </div>
 
             {/* Disclaimer */}
-            <p className="text-xs text-slate-600 text-center mt-6">
+            <p className="text-xs text-text-muted text-center mt-6">
               This analysis evaluates acoustic speech characteristics and
               is not a medical or psychological diagnosis.
             </p>
